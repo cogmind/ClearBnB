@@ -56,7 +56,6 @@ public class UserHandler {
 
                         user.setPassword(hashedPassword);
                         user.setBalance(defaultBalance);
-                        user.setUserId();
 
                         // Save user to db
                         userRepository.save(user);
@@ -78,7 +77,6 @@ public class UserHandler {
             // Update a user
             userRepository.update(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getBalance());
             System.out.println(userRepository.getAll());
-            entityManager.close();
         });
     }
 
@@ -88,7 +86,6 @@ public class UserHandler {
             User user = req.body(User.class);
             userRepository.remove(user.getUserId());
             System.out.println(userRepository.getAll());
-            entityManager.close();
         });
     }
 
@@ -115,7 +112,6 @@ public class UserHandler {
             } else {
                 res.json(Map.of("error", "Bad credentials"));
             }
-            entityManager.close();
         });
     }
 
@@ -126,7 +122,6 @@ public class UserHandler {
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
             res.json(req.session("current-user"));
-            entityManager.close();
         });
     }
 
@@ -139,7 +134,6 @@ public class UserHandler {
             req.session("current-user", null);
 
             res.json(Map.of("ok", "logged out"));
-            entityManager.close();
         });
     }
 }

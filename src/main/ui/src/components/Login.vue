@@ -22,24 +22,14 @@ export default {
       password: "",
     };
   },
-  async mounted() {},
   methods: {
     async login() {
       let credentials = {
+        username: this.username,
         email: this.username,
         password: this.password,
       };
-      console.log(credentials.email);
-      let res = await fetch("http://localhost:4000/api/login", {
-        method: "POST",
-        body: JSON.stringify(credentials),
-      })
-        .then(function (response) {
-          return response.json();
-        })
-        .then(function (data) {
-          console.log(data);
-        });
+      this.$store.dispatch("login", credentials);
     },
   },
 };
