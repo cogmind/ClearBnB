@@ -32,7 +32,7 @@ public class UserHandler {
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
             try{
-                User seeIfTheUserExists = userRepository.findByUsername(user.getUsername());
+                User seeIfTheUserExists = userRepository.getByUsername(user.getUsername());
                 if(seeIfTheUserExists.getClass().equals(User.class)){
 
                     res.json("That username is already taken.");
@@ -46,9 +46,9 @@ public class UserHandler {
                     // Check if email is not taken
                     User exists;
                     try {
-                        exists = this.userRepository.findByEmail(user.getEmail());
+                        exists = this.userRepository.getByEmail(user.getEmail());
                         res.json(Map.of("error", "User already exists"));
-                        return;
+
                     } catch(NoResultException nre) {
 
                         // Hash password (encrypt password)
@@ -60,7 +60,7 @@ public class UserHandler {
 
                         // Save user to db
                         userRepository.save(user);
-                        System.out.println(userRepository.findAll());
+                        System.out.println(userRepository.getAll());
                         res.json("User created");
                     }
                 }
@@ -77,7 +77,7 @@ public class UserHandler {
             User user = req.body(User.class);
             // Update a user
             userRepository.update(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getBalance());
-            System.out.println(userRepository.findAll());
+            System.out.println(userRepository.getAll());
             entityManager.close();
         });
     }
@@ -87,7 +87,7 @@ public class UserHandler {
         app.post("/api/removeuser", (req, res) -> {
             User user = req.body(User.class);
             userRepository.remove(user.getUserId());
-            System.out.println(userRepository.findAll());
+            System.out.println(userRepository.getAll());
             entityManager.close();
         });
     }
@@ -99,7 +99,7 @@ public class UserHandler {
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
 
-            User exists = this.userRepository.findByEmail(user.getEmail());
+            User exists = this.userRepository.getByEmail(user.getEmail());
 
             if (exists == null) {
                 res.json(Map.of("error", "Bad credentials"));

@@ -14,6 +14,7 @@ public class Application {
 
     public Application() {
         app.cors();
+        app.listen(4000);
         con = MySQL.connect();
 
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("ClearBnB");

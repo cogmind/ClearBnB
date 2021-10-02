@@ -15,27 +15,27 @@ public class UserRepositoryImpl implements UserRespository {
         }
 
         @Override
-        public User findById(Long id) {
+        public User getById(Long id) {
             return entityManager.find(User.class, id);
         }
 
         @Override
-        public User findByUsername(String username) {
+        public User getByUsername(String username) {
             return entityManager.createQuery("SELECT u FROM User u WHERE u.username = :username", User.class)
                     .setParameter("username", username)
                     .getSingleResult();
         }
 
         @Override
-        public User findByEmail(String email) {
+        public User getByEmail(String email) {
             return entityManager.createQuery("SELECT u FROM User u WHERE u.email = :email", User.class)
                     .setParameter("email", email)
                     .getSingleResult();
         }
 
         @Override
-        public List<User> findAll() {
-            return entityManager.createQuery("from User").getResultList();
+        public List<User> getAll() {
+            return entityManager.createQuery("FROM User").getResultList();
         }
 
         @Override
@@ -53,7 +53,7 @@ public class UserRepositoryImpl implements UserRespository {
 
     @Override
         public User update(Long id, String username, String password, String email, Double balance) {
-            User user = this.findById(id);
+            User user = this.getById(id);
             try {
                 entityManager.getTransaction().begin();
                 if (username != null) {
@@ -78,7 +78,7 @@ public class UserRepositoryImpl implements UserRespository {
 
     @Override
     public User remove(Long id) {
-            User user = this.findById(id);
+            User user = this.getById(id);
             try {
                 entityManager.getTransaction().begin();
                 // TODO Change to version management

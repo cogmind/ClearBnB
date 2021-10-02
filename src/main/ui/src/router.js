@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
-import Start from "./components/Start.vue";
+import Start from "./views/Start.vue";
 import Listings from "./components/Listings.vue";
 import Bookings from "./components/Bookings.vue";
 import Login from "./components/Login.vue";
