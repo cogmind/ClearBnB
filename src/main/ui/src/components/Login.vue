@@ -30,6 +30,7 @@ export default {
         password: this.password,
       };
       this.$store.dispatch("login", credentials);
+      localStorage.setItem("user", JSON.stringify(credentials));
     },
   },
 };

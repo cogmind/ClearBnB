@@ -59,6 +59,8 @@ public class UserHandler {
 
                         // Save user to db
                         userRepository.save(user);
+                        // Log in
+                        req.session("user", user);
                         System.out.println(userRepository.getAll());
                         res.json("User created");
                     }
@@ -106,7 +108,8 @@ public class UserHandler {
             // validate password
             if (HashPassword.match(user.getPassword(), exists.getPassword())) {
                 // save user in session, to remember logged in state
-                req.session("current-user", exists);
+                System.out.println("LOGIN Setting session storage to user");
+                req.session("user", exists);
                 res.json(exists);
 
             } else {
