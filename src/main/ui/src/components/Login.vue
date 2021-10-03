@@ -1,6 +1,7 @@
 <template>
   <div>
     <p>ClearBnB</p>
+    <Navbar />
     <p>Login</p>
     <form @submit.prevent="login">
       <p class="centeredText">Username</p>
@@ -14,8 +15,12 @@
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
 export default {
   name: "Login",
+  components: {
+    Navbar,
+  },
   data() {
     return {
       username: "",

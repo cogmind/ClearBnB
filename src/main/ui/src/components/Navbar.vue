@@ -23,11 +23,9 @@ export default {
   methods: {},
   mounted() {
     if (localStorage.getItem("user") !== null) {
-      console.log("NOT NULL");
       this.username = JSON.parse(localStorage.getItem("user")).username;
       this.loggedIn = true;
     } else {
-      console.log("NULL");
       this.loggedIn = false;
     }
   },

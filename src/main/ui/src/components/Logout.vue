@@ -1,12 +1,16 @@
 <template>
   <p>ClearBnB</p>
+  <Navbar />
   <p>You have been logged out</p>
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
 export default {
   name: "Logout",
-  components: {},
+  components: {
+    Navbar,
+  },
   data() {
     return {};
   },

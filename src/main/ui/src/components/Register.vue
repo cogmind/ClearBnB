@@ -1,6 +1,7 @@
 <template>
   <div>
     <p>ClearBnB</p>
+    <Navbar />
     <p>Register</p>
     <form @submit.prevent="register">
       <p class="centeredText">Username/Email</p>
@@ -14,9 +15,12 @@
 </template>
 
 <script>
+import Navbar from "./Navbar.vue";
 export default {
   name: "Register",
-  components: {},
+  components: {
+    Navbar,
+  },
   data() {
     return {};
   },
