@@ -12,8 +12,8 @@ export default {
   },
   methods: {},
   mounted() {
+    localStorage.removeItem("user");
     this.$store.dispatch("logout");
-    localStorage.setItem("user", null);
   },
 };
 </script>
