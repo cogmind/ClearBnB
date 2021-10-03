@@ -36,6 +36,11 @@ export default createStore({
         .then(function (data) {
           console.log(data);
         });
-    }
+    },
+    async logout() {
+      await fetch("http://localhost:4000/api/logout", {
+        method: "GET",
+      })
+    },
   },
 });

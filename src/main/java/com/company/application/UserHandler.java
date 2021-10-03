@@ -124,7 +124,7 @@ public class UserHandler {
             // return user saved in session
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-            res.json(req.session("current-user"));
+            res.json(req.session("user"));
         });
     }
 
@@ -134,7 +134,7 @@ public class UserHandler {
             // Remove user from session
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-            req.session("current-user", null);
+            req.session("user", null);
 
             res.json(Map.of("ok", "logged out"));
         });
