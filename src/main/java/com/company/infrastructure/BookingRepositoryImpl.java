@@ -22,6 +22,7 @@ public class BookingRepositoryImpl implements BookingRepository {
                 .getSingleResult();
     }
 
+
     @Override
     public List<Booking> getAll() {
         return entityManager.createQuery("FROM Booking").getResultList();
@@ -74,4 +75,5 @@ public class BookingRepositoryImpl implements BookingRepository {
     public void deleteById(long booking_id) {
         //TODO Implement delete by versioning. See ListingRepository (WIP)
     }
+
 }

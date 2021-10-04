@@ -25,10 +25,10 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public Listing getListingByOwnerId(long owner_id) {
+    public List<Listing> getListingsByOwnerId(long owner_id) {
         return entityManager.createQuery("SELECT l FROM Listing l WHERE l.owner_id = :owner_id", Listing.class)
                 .setParameter("owner_id", owner_id)
-                .getSingleResult();
+                .getResultList();
     }
 
     @Override
@@ -89,6 +89,13 @@ public class ListingRepositoryImpl implements ListingRepository {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Override
+    public Listing getListingByTitle(String title) {
+        return entityManager.createQuery("SELECT b FROM Listing b WHERE b.title = :title", Listing.class)
+                .setParameter("title", title)
+                .getSingleResult();
     }
 
     @Override

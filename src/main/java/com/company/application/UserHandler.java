@@ -25,7 +25,7 @@ public class UserHandler {
         this.remove();
     }
 
-    public void register() {
+    private void register() {
         // Register user
         app.post("/api/register", (req, res) -> {
             User user = req.body(User.class);
@@ -73,7 +73,7 @@ public class UserHandler {
          });
     }
 
-    public void update() {
+    private void update() {
         app.post("/api/updateuser", (req, res) -> {
             User user = req.body(User.class);
             // Update a user
@@ -82,7 +82,7 @@ public class UserHandler {
         });
     }
 
-    public void remove() {
+    private void remove() {
         // Remove a user
         app.post("/api/removeuser", (req, res) -> {
             User user = req.body(User.class);
@@ -91,7 +91,7 @@ public class UserHandler {
         });
     }
 
-    public void login() {
+    private void login() {
         // login user
         app.post("/api/login", (req, res) -> {
             User user = req.body(User.class);
@@ -118,7 +118,7 @@ public class UserHandler {
         });
     }
 
-    public void whoami() {
+    private void whoami() {
         // who am i? get logged in user
         app.get("/api/whoami", (req, res) -> {
             // return user saved in session
@@ -128,7 +128,7 @@ public class UserHandler {
         });
     }
 
-    public void logout(){
+    private void logout(){
         // Logout user
         app.get("/api/logout", (req, res) -> {
             // Remove user from session
