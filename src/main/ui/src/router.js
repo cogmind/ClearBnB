@@ -1,12 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
 
 import Start from "./views/Start.vue";
-import Listings from "./components/Listings.vue";
-import Bookings from "./components/Bookings.vue";
-import Login from "./components/Login.vue";
-import Logout from "./components/Logout.vue";
-import Register from "./components/Register.vue";
-import Chat from "./components/Chat.vue";
+import Listings from "./views/Listings.vue";
+import Bookings from "./views/Bookings.vue";
+import Login from "./views/Login.vue";
+import Logout from "./views/Logout.vue";
+import Register from "./views/Register.vue";
+import Chat from "./views/Chat.vue";
 
 export default createRouter({
   history: createWebHistory(),

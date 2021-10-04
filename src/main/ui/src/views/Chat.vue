@@ -1,13 +1,13 @@
 <template>
   <p>ClearBnB</p>
   <Navbar />
-  <p>Listings</p>
+  <p>Chat</p>
 </template>
 
 <script>
-import Navbar from "./Navbar.vue";
+import Navbar from "../components/Navbar.vue";
 export default {
-  name: "Listings",
+  name: "Chat",
   components: {
     Navbar,
   },
