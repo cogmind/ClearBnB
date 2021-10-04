@@ -2,18 +2,13 @@ package com.company.application;
 
 import com.company.domain.Booking;
 import com.company.domain.Listing;
-import com.company.domain.ListingRepository;
-import com.company.domain.User;
 import com.company.infrastructure.BookingRepositoryImpl;
 import com.company.infrastructure.ListingRepositoryImpl;
-import com.company.infrastructure.UserRepositoryImpl;
 import express.Express;
 import jakarta.persistence.EntityManager;
 
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
 public class BookingHandler {
     Express app;
