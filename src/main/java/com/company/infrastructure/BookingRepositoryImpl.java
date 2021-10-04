@@ -22,6 +22,11 @@ public class BookingRepositoryImpl implements BookingRepository {
                 .getSingleResult();
     }
 
+    public List<Booking> getBookingsByListingId(long listing_id) {
+        return entityManager.createQuery("SELECT b FROM Booking b WHERE b.listing_id = :listing_id", Booking.class)
+                .setParameter("listing_id", listing_id)
+                .getResultList();
+    }
 
     @Override
     public List<Booking> getAll() {
