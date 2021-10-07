@@ -5,12 +5,12 @@ import jakarta.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 
-public class Listing {
+public class Listing implements Cloneable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private long listing_id;
+    private Long listing_id;
     private int version;
-    private long owner_id;
+    private Long owner_id;
     private Timestamp audited_datetime; //Debuggable type
     private String title;
     private String description;
@@ -18,14 +18,21 @@ public class Listing {
     private String location;
     private int guests;
     private double price;
-    private Date listing_start_date;
-    private Date listing_end_date;
+    private Date start;
+    private Date end;
+
+    public Object clone() {
+        Listing listing = new Listing();
+        listing.setVersion(listing.getVersion() + 1);
+
+        return listing;
+    }
 
     public long getListing_id() {
         return listing_id;
     }
 
-    public void setListing_id(long listing_id) {
+    public void setListing_id(Long listing_id) {
         this.listing_id = listing_id;
     }
 
@@ -101,19 +108,19 @@ public class Listing {
         this.price = price;
     }
 
-    public Date getListing_start_date() {
-        return listing_start_date;
+    public Date getStart() {
+        return start;
     }
 
-    public void setListing_start_date(Date listing_start_date) {
-        this.listing_start_date = listing_start_date;
+    public void setStart(Date start) {
+        this.start = start;
     }
 
-    public Date getListing_end_date() {
-        return listing_end_date;
+    public Date getEnd() {
+        return end;
     }
 
-    public void setListing_end_date(Date listing_end_date) {
-        this.listing_end_date = listing_end_date;
+    public void setEnd(Date end) {
+        this.end = end;
     }
 }

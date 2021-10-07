@@ -13,7 +13,7 @@
 <script>
 import Navbar from "../components/Navbar.vue";
 export default {
-  name: "Listings",
+  name: "ViewListings",
   components: {
     Navbar,
   },
@@ -28,8 +28,8 @@ export default {
       image_url: "",
       guests: 0,
       price: 0.0,
-      listing_start_date: "",
-      listing_end_date: "",
+      start: "",
+      end: "",
     };
   },
   methods: {},

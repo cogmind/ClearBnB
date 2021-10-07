@@ -1,10 +1,8 @@
 package com.company.infrastructure;
-
 import com.company.domain.Listing;
 import com.company.domain.ListingRepository;
-import com.company.domain.User;
-import jakarta.persistence.EntityManager;
 
+import jakarta.persistence.EntityManager;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -18,14 +16,14 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public Listing getListingById(long listing_id) {
+    public Listing getListingById(Long listing_id) {
         return entityManager.createQuery("SELECT l FROM Listing l WHERE l.listing_id = :listing_id", Listing.class)
                 .setParameter("listing_id", listing_id)
                 .getSingleResult();
     }
 
     @Override
-    public List<Listing> getListingsByOwnerId(long owner_id) {
+    public List<Listing> getListingsByOwnerId(Long owner_id) {
         return entityManager.createQuery("SELECT l FROM Listing l WHERE l.owner_id = :owner_id", Listing.class)
                 .setParameter("owner_id", owner_id)
                 .getResultList();
@@ -50,7 +48,7 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public Listing update(long listing_id, int version, long owner_id, Timestamp audited_datetime, String title, String description, String image_url, String location, int guests, double price, Date listing_start_date, Date listing_end_date) {
+    public Listing update(Long listing_id, int version, Long owner_id, Timestamp audited_datetime, String title, String description, String image_url, String location, int guests, double price, Date listing_start_date, Date listing_end_date) {
         Listing listing = this.getListingById(listing_id);
         try {
             entityManager.getTransaction().begin();
@@ -76,10 +74,10 @@ public class ListingRepositoryImpl implements ListingRepository {
                 listing.setPrice(price);
             }
             if (listing_start_date != null) {
-                listing.setListing_start_date(listing_start_date);
+                listing.setStart(listing_start_date);
             }
             if (listing_end_date != null) {
-                listing.setListing_end_date(listing_end_date);
+                listing.setEnd(listing_end_date);
             }
 
             entityManager.getTransaction().commit();
@@ -99,17 +97,15 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public void deleteById(long listing_id) {
+    public void deleteById(Long listing_id) {
         // Delete by versioning
         // Copy, set version number to plus one, increase ID by one and save
         Listing listing = this.getListingById(listing_id);
-        Listing copyOfListing = listing; // TODO DEBUG: Should be copy by value not by reference
         try {
-            entityManager.getTransaction().begin();
-            copyOfListing.setVersion(copyOfListing.getVersion() + 1);
-            copyOfListing.setListing_id(getAll().size() + 1); // DEBUGGABLE Does this work?
-            save(copyOfListing);
-            entityManager.getTransaction().commit();
+            Listing clone = entityManager.find(Listing.class, listing.getListing_id());
+            entityManager.detach(clone);
+            clone.setListing_id(null);// TODO DEBUG Will this work?
+            entityManager.persist(clone);
         } catch (Exception e) {
             e.printStackTrace();
         }

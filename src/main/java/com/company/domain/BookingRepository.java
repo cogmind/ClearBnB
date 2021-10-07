@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface BookingRepository {
 
-    Booking getBookingById(long booking_id);
+    Booking getBookingById(Long booking_id);
     List<Booking> getAll();
     Booking save(Booking booking);
-    Booking update(long booking_id, long listing_booked, long user, double fee, Date start_date, Date end_date, int cancelled);
-    void deleteById(long booking_id);
+    Booking update(Long booking_id, Long listing_booked, Long user, double fee, Date start_date, Date end_date, int cancelled);
+    void deleteById(Long booking_id);
 }

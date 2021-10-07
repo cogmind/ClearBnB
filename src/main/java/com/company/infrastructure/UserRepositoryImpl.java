@@ -82,8 +82,7 @@ public class UserRepositoryImpl implements UserRespository {
             User user = this.getById(id);
             try {
                 entityManager.getTransaction().begin();
-                // TODO Change to version management
-                //entityManager.remove(user);
+                entityManager.remove(user);
                 entityManager.getTransaction().commit();
                 return user;
             } catch (Exception e) {

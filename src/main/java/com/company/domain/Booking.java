@@ -10,8 +10,8 @@ public class Booking {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long booking_id;
-    long listing_booked;
-    long user;
+    Long listing_booked;
+    Long user;
     double fee;
     Date start_date;
     Date end_date;
@@ -21,7 +21,7 @@ public class Booking {
         return booking_id;
     }
 
-    public void setBooking_id(long booking_id) {
+    public void setBooking_id(Long booking_id) {
         this.booking_id = booking_id;
     }
 
@@ -29,7 +29,7 @@ public class Booking {
         return listing_booked;
     }
 
-    public void setListing_booked(long listing_booked) {
+    public void setListing_booked(Long listing_booked) {
         this.listing_booked = listing_booked;
     }
 
@@ -37,7 +37,7 @@ public class Booking {
         return user;
     }
 
-    public void setUser(long user) {
+    public void setUser(Long user) {
         this.user = user;
     }
 
