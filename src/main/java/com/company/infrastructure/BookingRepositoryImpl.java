@@ -2,7 +2,6 @@ package com.company.infrastructure;
 
 import com.company.domain.Booking;
 import com.company.domain.BookingRepository;
-import com.company.domain.Listing;
 import jakarta.persistence.EntityManager;
 
 import java.sql.Date;
@@ -48,7 +47,7 @@ public class BookingRepositoryImpl implements BookingRepository {
     }
 
     @Override
-    public Booking update(Long booking_id, Long listing_booked, Long user, double fee, Date start_date, Date end_date, int cancelled) {
+    public Booking update(Long booking_id, Long listing_booked, Long user, double fee, Date start_date, Date end_date, boolean cancelled) {
         Booking booking = this.getBookingById(booking_id);
 
         try {
@@ -67,9 +66,8 @@ public class BookingRepositoryImpl implements BookingRepository {
             if (end_date != null) {
                 booking.setEnd_date(end_date);
             }
-            if (cancelled >= 0) {
-                booking.setCancelled(cancelled);
-            }
+            booking.setCancelled(cancelled);
+
             return booking;
         } catch (Exception e) {
             e.printStackTrace();

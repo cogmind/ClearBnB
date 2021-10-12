@@ -1,11 +1,11 @@
 package com.company.domain;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.sql.Date;
 
+@Entity
+@Table(name="booking")
 public class Booking {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -15,7 +15,7 @@ public class Booking {
     double fee;
     Date start_date;
     Date end_date;
-    int cancelled;
+    boolean cancelled;
 
     public long getBooking_id() {
         return booking_id;
@@ -65,11 +65,11 @@ public class Booking {
         this.end_date = end_date;
     }
 
-    public int getCancelled() {
+    public boolean getCancelled() {
         return cancelled;
     }
 
-    public void setCancelled(int cancelled) {
+    public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
 }

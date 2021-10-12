@@ -20,6 +20,13 @@ public class BookingHandler {
         this.entityManager = entityManager;
         this.bookingRepository = new BookingRepositoryImpl(this.entityManager);
         this.createBooking();
+        this.viewBookings();
+    }
+
+    private void viewBookings() {
+        app.get("/api/bookings", (req, res) -> {
+            res.json(this.bookingRepository.getAll());
+        });
     }
 
     private void createBooking() {
@@ -35,8 +42,8 @@ public class BookingHandler {
                 // Retrieve listing from DB
                 ListingRepositoryImpl listingRepository = new ListingRepositoryImpl(this.entityManager);
                 Listing current_listing = listingRepository.getListingById(booking.getListing_booked());
-                Date available_start = current_listing.getListing_start_date();
-                Date available_end = current_listing.getListing_end_date();
+                Date available_start = current_listing.getStart();
+                Date available_end = current_listing.getEnd();
 
                 // Check if dates are valid for a specific listing
                 if ((booking_start.compareTo(available_start) > 0) && (booking_end.compareTo(available_end) <= 0)) {

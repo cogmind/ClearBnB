@@ -1,6 +1,6 @@
 <template>
+  <p><router-link to="/">ClearBnB</router-link></p>
   <Navbar />
-  <p>ClearBnB</p>
 </template>
 
 <script>

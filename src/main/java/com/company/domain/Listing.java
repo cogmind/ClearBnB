@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import java.sql.Date;
 import java.sql.Timestamp;
 
+@Entity
+@Table(name="listing")
 public class Listing implements Cloneable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

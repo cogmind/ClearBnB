@@ -17,6 +17,7 @@ export default createStore({
       await fetch("http://localhost:4000/api/login", {
         method: "POST",
         body: JSON.stringify(credentials),
+        credentials: "include",
       })
         .then(function (response) {
           return response.json();

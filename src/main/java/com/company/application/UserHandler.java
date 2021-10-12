@@ -22,7 +22,20 @@ public class UserHandler {
         this.login();
         this.logout();
         this.whoami();
+        this.getId();
         this.remove();
+    }
+
+    private void getId() {
+            app.get("/api/userid", (req, res) -> {
+                System.out.println("Getting user id...");
+                res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+                res.append("Access-Control-Allow-Credentials", "true");
+
+                User user = req.session("current-user");
+                System.out.println(user.getUserId());
+                res.send(user.getUserId());
+            });
     }
 
     private void register() {
@@ -60,7 +73,7 @@ public class UserHandler {
                         // Save user to db
                         userRepository.save(user);
                         // Log in
-                        req.session("user", user);
+                        req.session("current-user", user);
                         System.out.println(userRepository.getAll());
                         res.json("User created");
                     }
@@ -75,6 +88,8 @@ public class UserHandler {
 
     private void update() {
         app.post("/api/updateuser", (req, res) -> {
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
             User user = req.body(User.class);
             // Update a user
             userRepository.update(user.getUserId(), user.getUsername(), user.getPassword(), user.getEmail(), user.getBalance());
@@ -85,6 +100,8 @@ public class UserHandler {
     private void remove() {
         // Remove a user
         app.post("/api/removeuser", (req, res) -> {
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
             User user = req.body(User.class);
             userRepository.remove(user.getUserId());
             System.out.println(userRepository.getAll());
@@ -109,7 +126,7 @@ public class UserHandler {
             if (HashPassword.match(user.getPassword(), exists.getPassword())) {
                 // save user in session, to remember logged in state
                 System.out.println("LOGIN Setting session storage to user");
-                req.session("user", exists);
+                req.session("current-user", exists);
                 res.json(exists);
 
             } else {
@@ -124,7 +141,7 @@ public class UserHandler {
             // return user saved in session
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-            res.json(req.session("user"));
+            res.json(req.session("current-user"));
         });
     }
 
@@ -134,7 +151,7 @@ public class UserHandler {
             // Remove user from session
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-            req.session("user", null);
+            req.session("current-user", null);
 
             res.json(Map.of("ok", "logged out"));
         });

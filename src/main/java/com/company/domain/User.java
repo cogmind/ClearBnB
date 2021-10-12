@@ -3,7 +3,7 @@ package com.company.domain;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User {
     @Id
     @Column(name = "user_id")

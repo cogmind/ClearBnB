@@ -16,6 +16,9 @@ export default createRouter({
       path: '/',
       component: Start,
     }, {
+      path: '/start',
+      component: Start,
+    }, {
       path: '/listings',
       component: ViewListings,
     }, {

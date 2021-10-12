@@ -1,5 +1,5 @@
 <template>
-  <p>ClearBnB</p>
+  <p><router-link to="start">ClearBnB</router-link></p>
   <Navbar />
   <p>You have been logged out</p>
 </template>

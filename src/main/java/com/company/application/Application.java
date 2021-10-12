@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class Application {
     // Java Express
@@ -13,6 +14,7 @@ public class Application {
     Connection con;
 
     public Application() {
+        //app.devLogging();
         app.cors();
         app.listen(4000);
         con = MySQL.connect();
@@ -21,7 +23,10 @@ public class Application {
         EntityManager em = emf.createEntityManager();
 
         UserHandler userHandler = new UserHandler(app, em);
-
+        ListingHandler listingHandler = new ListingHandler(app, em);
+        BookingHandler bookingHandler = new BookingHandler(app, em);
+        //ReviewHandler
+        //ChatHandler
     }
 
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p>ClearBnB</p>
+    <p><router-link to="start">ClearBnB</router-link></p>
     <Navbar />
     <p>Register</p>
     <form @submit.prevent="register">

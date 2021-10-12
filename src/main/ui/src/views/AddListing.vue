@@ -1,5 +1,5 @@
 <template>
-  <p>ClearBnB</p>
+  <p><router-link to="start">ClearBnB</router-link></p>
   <Navbar />
   <p>Add Listing</p>
   <form @submit.prevent="addListing">
@@ -34,6 +34,8 @@ export default {
   },
   data() {
     return {
+      audited_datetime: null,
+      owner_id: null,
       title: "",
       description: "",
       image_url: "",
@@ -43,7 +45,63 @@ export default {
       end: "",
     };
   },
-  methods: {},
+  methods: {
+    async addListing() {
+      // Get owner id
+      const res = await fetch("http://localhost:4000/api/userid", {
+        method: "GET",
+        credentials: "include",
+      });
+      console.log(res);
+      console.log(res.text);
+      this.owner_id = res.text;
+
+      // Format date
+      if (this.start.indexOf('-') < 0) {
+      this.start =
+        this.start.substring(0, 4) +
+        "-" +
+        this.start.substring(4, 6) +
+        "-" +
+        this.start.substring(6, 8);
+      }
+
+      if (this.end.indexOf('-') < 0) {
+      this.end =
+        this.end.substring(0, 4) +
+        "-" +
+        this.end.substring(4, 6) +
+        "-" +
+        this.end.substring(6, 8);
+        }
+
+      // Timestamp
+      this.audited_datetime = Date.now();
+
+      let listing = {
+        owner_id: this.owner_id,
+        title: this.title,
+        description: this.description,
+        image_url: this.image_url,
+        location: this.location,
+        guests: this.guests,
+        price: this.price,
+        start: this.start,
+        end: this.end,
+        audited_datetime: this.audited_datetime,
+      };
+      await fetch("http://localhost:4000/api/createlisting", {
+        method: "POST",
+        body: JSON.stringify(listing),
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (data) {
+          console.log(data);
+        });
+    },
+  },
 };
 </script>
 

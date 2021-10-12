@@ -1,7 +1,9 @@
 package com.company.infrastructure;
+
 import com.company.domain.Listing;
 import com.company.domain.ListingRepository;
 
+import express.Express;
 import jakarta.persistence.EntityManager;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -91,7 +93,7 @@ public class ListingRepositoryImpl implements ListingRepository {
 
     @Override
     public Listing getListingByTitle(String title) {
-        return entityManager.createQuery("SELECT b FROM Listing b WHERE b.title = :title", Listing.class)
+        return entityManager.createQuery("SELECT l FROM Listing l WHERE l.title = :title", Listing.class)
                 .setParameter("title", title)
                 .getSingleResult();
     }
