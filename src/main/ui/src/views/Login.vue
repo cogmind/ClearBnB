@@ -36,6 +36,7 @@ export default {
       };
       this.$store.dispatch("login", credentials);
       localStorage.setItem("user", JSON.stringify(credentials));
+      this.$router.push('listings');
     },
   },
 };

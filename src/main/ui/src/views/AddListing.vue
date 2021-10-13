@@ -47,15 +47,6 @@ export default {
   },
   methods: {
     async addListing() {
-      // Get owner id
-      const res = await fetch("http://localhost:4000/api/userid", {
-        method: "GET",
-        credentials: "include",
-      });
-      console.log(res);
-      console.log(res.text);
-      this.owner_id = res.text;
-
       // Format date
       if (this.start.indexOf('-') < 0) {
       this.start =
@@ -78,6 +69,7 @@ export default {
       // Timestamp
       this.audited_datetime = Date.now();
 
+      
       let listing = {
         owner_id: this.owner_id,
         title: this.title,
@@ -90,16 +82,33 @@ export default {
         end: this.end,
         audited_datetime: this.audited_datetime,
       };
-      await fetch("http://localhost:4000/api/createlisting", {
+
+      // Get owner id
+      await fetch("http://localhost:4000/api/userid", {
+        method: "GET",
+        credentials: "include",
+      }).then(function (response) {
+      if (response.ok) {
+        console.log("FETCH COMPLETE userid ");
+        return response.json();
+      } else {
+        console.log("FETCH FAILED userId");
+        return Promise.reject(response);
+      }}).then( function (data) {
+        listing.owner_id = data;
+        console.log("FETCH createlisting");
+      return fetch("http://localhost:4000/api/createlisting", {
         method: "POST",
         body: JSON.stringify(listing),
       })
         .then(function (response) {
+          console.log(listing);
+          console.log(data);
           return response.json();
         })
-        .then(function (data) {
-          console.log(data);
-        });
+      })
+
+      this.$router.push('listings');
     },
   },
 };
