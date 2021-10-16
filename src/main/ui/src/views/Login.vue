@@ -34,8 +34,8 @@ export default {
         email: this.username,
         password: this.password,
       };
-      this.$store.dispatch("login", credentials);
-      localStorage.setItem("user", JSON.stringify(credentials));
+      this.$store.dispatch('login', credentials);
+      localStorage.setItem('user', JSON.stringify(credentials));
       this.$router.push('listings');
     },
   },

@@ -8,7 +8,15 @@ export default {
   data() {
     return {};
   },
-};
+  async mounted(){
+    console.log('mounted');
+    // Logout if user exits tab or browser
+    document.addEventListener('visibilitychange', () => {
+      this.$store.dispatch('logout');
+      localStorage.removeItem('user');
+    });
+  }
+}
 </script>
 
 <style>

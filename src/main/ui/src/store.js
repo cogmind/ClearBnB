@@ -38,7 +38,7 @@ export default createStore({
           console.log(data);
         });
     },
-    async logout() {
+    async logout(store) {
       await fetch("http://localhost:4000/api/logout", {
         method: "GET",
       })
