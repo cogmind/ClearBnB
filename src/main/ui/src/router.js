@@ -29,7 +29,7 @@ export default createRouter({
       path: '/bookings',
       component: Bookings,
     }, {
-      path: '/:data',
+      path: '/:id#:start#:end#:fee#:guests',
       name: 'book',
       component: AddBooking,
     }, {

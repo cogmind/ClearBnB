@@ -12,7 +12,7 @@
         {{ new Date(listing.start).toISOString().split('T')[0] }} ―
         {{ new Date(listing.end).toISOString().split('T')[0]}}</p>
       <p><br/><br/> {{listing.description}}</p>
-      <button type="button" @click="book($event, listing.listing_id)">Book</button>
+      <button type="button" @click="book($event, listing)">Book</button>
       <hr/>
       </li>
   </ul>
@@ -40,10 +40,15 @@ export default {
   },
   methods: {
     book(event, selectedListing){
-      alert('booking' + selectedListing);
       this.$router.push({
       name: 'book',
-      params: { data: selectedListing}
+      params: {
+        id: selectedListing.listing_id,
+        start: selectedListing.start,
+        end: selectedListing.end,
+        fee: selectedListing.price,
+        guests: selectedListing.guests,
+        }
     });
 
     },
