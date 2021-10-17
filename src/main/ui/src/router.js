@@ -4,6 +4,7 @@ import Start from "./views/Start.vue";
 import ViewListings from "./views/ViewListings.vue";
 import AddListing from "./views/AddListing.vue";
 import Bookings from "./views/Bookings.vue";
+import AddBooking from "./views/AddBooking.vue";
 import Login from "./views/Login.vue";
 import Logout from "./views/Logout.vue";
 import Register from "./views/Register.vue";
@@ -27,6 +28,10 @@ export default createRouter({
     }, {
       path: '/bookings',
       component: Bookings,
+    }, {
+      path: '/:data',
+      name: 'book',
+      component: AddBooking,
     }, {
       path: '/login',
       component: Login,

@@ -3,10 +3,16 @@
   <Navbar />
   <p>View Listings</p>
   <ul>
-    <li v-for="(listing) in listings" v-bind:key="listing.id">
-      <img :src="listing.image_url" width="300"/>
-      <h3>{{listing.title}}</h3>
-      <p>Description<br/><br/> {{listing.description}}</p>
+    <li v-for="(listing) in listings" v-bind:key="listing.listing_id">
+      <img :src="listing.image_url" width="300" alt="listed propery"/>
+      <h3>{{ listing.title }}</h3>
+      <p>{{ listing.price }} €</p>
+      <p>Guests: {{ listing.guests }}</p>
+      <p>Available:
+        {{ new Date(listing.start).toISOString().split('T')[0] }} ―
+        {{ new Date(listing.end).toISOString().split('T')[0]}}</p>
+      <p><br/><br/> {{listing.description}}</p>
+      <button type="button" @click="book($event, listing.listing_id)">Book</button>
       <hr/>
       </li>
   </ul>
@@ -28,14 +34,21 @@ export default {
   },
   data() {
     return {
-    listings: [],
+      selectedListing: -1,
+      listings: [],
     };
   },
-  methods: {},
-  // async beforeMount() {
-  //   this.listings = await (await fetch("/api/listings")).json();
-  // },
-  async mounted() {
+  methods: {
+    book(event, selectedListing){
+      alert('booking' + selectedListing);
+      this.$router.push({
+      name: 'book',
+      params: { data: selectedListing}
+    });
+
+    },
+  },
+  async beforeMount() {
     this.listings = await (await fetch("/api/listings")).json();
     console.log(this.listings)
   },
@@ -46,5 +59,12 @@ export default {
 ul {
   list-style-type: none;
   padding-left:0;
+}
+button {
+  padding: 20px;
+  background-color: #009;
+  color: white;
+  border-radius: 12px;
+  border: none;
 }
 </style>

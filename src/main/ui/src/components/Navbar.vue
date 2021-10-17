@@ -5,7 +5,6 @@
     <router-link v-if="loggedIn" to="/addlisting" class="link"
       >Add Listing</router-link
     >
-    <router-link v-if="loggedIn" to="/book" class="link">Book</router-link>
     <router-link to="/chat" class="link">Chat</router-link>
     <router-link v-if="!loggedIn" to="/login" class="link">Login</router-link>
     <router-link v-else to="/logout" class="link">Logout</router-link>
