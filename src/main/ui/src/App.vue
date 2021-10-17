@@ -10,6 +10,9 @@ export default {
   },
   async mounted(){
     console.log('mounted');
+    // Keep login state
+    let credentials = localStorage.getItem('user');
+    this.$store.dispatch('login', credentials);
     // Logout if user exits tab or browser
     document.addEventListener('visibilitychange', () => {
       this.$store.dispatch('logout');

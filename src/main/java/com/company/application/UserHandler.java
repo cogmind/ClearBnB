@@ -111,6 +111,7 @@ public class UserHandler {
     private void login() {
         // login user
         app.post("/api/login", (req, res) -> {
+            System.out.println("Logging in...");
             User user = req.body(User.class);
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");

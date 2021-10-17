@@ -11,6 +11,23 @@
 <script>
 export default {
   props: ["listing"],
+
+  data(){
+    return {
+      listing : { 
+        listing_id: "1",
+        version: 0,
+        owner_id: "",
+        audited_datetime: "",
+        title: "",
+        description: "",
+        image_url: "",
+        guests: 0,
+        price: 0.0,
+        start: "",
+        end: "",}
+    }
+  }
 };
 </script>
 >

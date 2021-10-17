@@ -1,13 +1,22 @@
 <template>
   <p><router-link to="start">ClearBnB</router-link></p>
   <Navbar />
-  <p>Listings</p>
-  <ListingItem
+  <p>View Listings</p>
+  <ul>
+    <li v-for="(listing) in listings" v-bind:key="listing.id">
+      <img :src="listing.image_url" width="300"/>
+      <h3>{{listing.title}}</h3>
+      <p>Description<br/><br/> {{listing.description}}</p>
+      <hr/>
+      </li>
+  </ul>
+
+  <!-- <ListingItem
     v-for="(listing, index) of listings"
     :key="index"
-    :current_listing="listing"
+    :listing="listing"
     @filter="filterListings"
-  />
+  /> -->
 </template>
 
 <script>
@@ -19,25 +28,23 @@ export default {
   },
   data() {
     return {
-      listing_id: "1",
-      version: 0,
-      owner_id: "",
-      audited_datetime: "",
-      title: "",
-      description: "",
-      image_url: "",
-      guests: 0,
-      price: 0.0,
-      start: "",
-      end: "",
+    listings: [],
     };
   },
   methods: {},
-  async beforeMount() {
+  // async beforeMount() {
+  //   this.listings = await (await fetch("/api/listings")).json();
+  // },
+  async mounted() {
     this.listings = await (await fetch("/api/listings")).json();
+    console.log(this.listings)
   },
-};
+}
 </script>
 
 <style scoped>
+ul {
+  list-style-type: none;
+  padding-left:0;
+}
 </style>
