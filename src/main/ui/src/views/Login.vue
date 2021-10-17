@@ -34,7 +34,9 @@ export default {
         email: this.username,
         password: this.password,
       };
-      this.$store.dispatch('login', credentials);
+      let loginUser = this.$store.dispatch('login', credentials);
+      console.log("USER ID: ", loginUser.id);
+      this.$store.commit('setUser', credentials);
       localStorage.setItem('user', JSON.stringify(credentials));
       this.$router.push('listings');
     },
