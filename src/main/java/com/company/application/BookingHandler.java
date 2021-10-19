@@ -36,42 +36,47 @@ public class BookingHandler {
             res.append("Access-Control-Allow-Credentials", "true");
 
             try {
-                Date booking_start = booking.getStart_date();
-                Date booking_end = booking.getEnd_date();
+                Date booking_start = booking.getStart();
+                Date booking_end = booking.getEnd();
 
                 // Retrieve listing from DB
                 ListingRepositoryImpl listingRepository = new ListingRepositoryImpl(this.entityManager);
-                Listing current_listing = listingRepository.getListingById(booking.getListing_booked());
+                Listing current_listing = listingRepository.getListingById(booking.getListing_id());
                 Date available_start = current_listing.getStart();
                 Date available_end = current_listing.getEnd();
 
                 // Check if dates are valid for a specific listing
-                if ((booking_start.compareTo(available_start) > 0) && (booking_end.compareTo(available_end) <= 0)) {
+                System.out.println("booking_start.compareTo(available_start): " + booking_start.compareTo(available_start));
+                System.out.println("booking_end.compareTo(available_end) <= 0: " + booking_end.compareTo(available_end));
+                if ((booking_start.compareTo(available_start) < 0) && (booking_end.compareTo(available_end) < 0)) {
                     System.out.println("Valid booking (1). Valid dates when booking...");
+
+                    // Check if dates have already been taken, for all bookings of a listing
+                    BookingRepositoryImpl bookings = new BookingRepositoryImpl(entityManager);
+                    List<Booking> bookingsForCurrentListing = bookings.getBookingsByListingId(current_listing.getListing_id());
+
+                    Date next_start;
+                    Date next_end;
+                    for (Booking next_booking: bookingsForCurrentListing) {
+                        next_start = next_booking.getStart();
+                        next_end = next_booking.getEnd();
+                        if (!(booking_start.compareTo(next_end) > 0 || booking_end.compareTo(next_start) > 0)) {
+                            res.json("ERROR: Booking overlaps with an existing booking.");
+                            return;
+                        }
+                    }
+                    bookingRepository.save(booking);
+                    res.json("Valid booking. No overlap with current bookings");
+                    System.out.println("Valid booking. No overlap with current bookings");
                 } else {
                     System.out.println("Invalid dates when booking. Dates not available (1)");
                     res.json("ERROR: Invalid dates");
                 }
 
-                // Check if dates have already been taken, for all bookings of a listing
-                BookingRepositoryImpl bookings = new BookingRepositoryImpl(entityManager);
-                List<Booking> bookingsForCurrentListing = bookings.getBookingsByListingId(current_listing.getListing_id());
-
-                Date next_start;
-                Date next_end;
-                for (Booking next_booking: bookingsForCurrentListing) {
-                    next_start = next_booking.getStart_date();
-                    next_end = next_booking.getEnd_date();
-                    if (!(booking_start.compareTo(next_end) > 0 || booking_end.compareTo(next_start) > 0)) {
-                        res.json("ERROR: Booking overlaps with an existing booking.");
-                        return;
-                    }
-                }
-                res.json("Valid booking. No overlap with current bookings");
-                System.out.println("Valid booking. No overlap with current bookings");
             }
             catch(Exception e) {
-                    res.json("Internal ERROR in BookingHandler");
+                e.printStackTrace();
+                res.json("Internal ERROR in BookingHandler");
             }
         });
     }

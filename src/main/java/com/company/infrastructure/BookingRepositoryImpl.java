@@ -47,12 +47,12 @@ public class BookingRepositoryImpl implements BookingRepository {
     }
 
     @Override
-    public Booking update(Long booking_id, Long listing_booked, Long user, double fee, Date start_date, Date end_date, boolean cancelled) {
+    public Booking update(Long booking_id, Long listing_booked, Long user, double fee, Date start, Date end, boolean cancelled) {
         Booking booking = this.getBookingById(booking_id);
 
         try {
             if (listing_booked > 0) {
-                booking.setListing_booked(listing_booked);
+                booking.setListing_id(listing_booked);
             }
             if (user > 0) {
                 booking.setUser(user);
@@ -60,11 +60,11 @@ public class BookingRepositoryImpl implements BookingRepository {
             if (fee > 0) {
                 booking.setFee(fee);
             }
-            if (start_date != null) {
-                booking.setStart_date(start_date);
+            if (start != null) {
+                booking.setStart(start);
             }
-            if (end_date != null) {
-                booking.setEnd_date(end_date);
+            if (end != null) {
+                booking.setEnd(end);
             }
             booking.setCancelled(cancelled);
 

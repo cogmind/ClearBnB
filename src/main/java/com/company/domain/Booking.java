@@ -10,11 +10,12 @@ public class Booking {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private long booking_id;
-    Long listing_booked;
+    Long listing_id;
     Long user;
     double fee;
-    Date start_date;
-    Date end_date;
+    Date start;
+    Date end;
+    int guests;
     boolean cancelled;
 
     public long getBooking_id() {
@@ -25,12 +26,12 @@ public class Booking {
         this.booking_id = booking_id;
     }
 
-    public long getListing_booked() {
-        return listing_booked;
+    public long getListing_id() {
+        return listing_id;
     }
 
-    public void setListing_booked(Long listing_booked) {
-        this.listing_booked = listing_booked;
+    public void setListing_id(Long listing_id) {
+        this.listing_id = listing_id;
     }
 
     public long getUser() {
@@ -49,20 +50,29 @@ public class Booking {
         this.fee = fee;
     }
 
-    public Date getStart_date() {
-        return start_date;
+    public Date getStart() {
+        return start;
     }
 
-    public void setStart_date(Date start_date) {
-        this.start_date = start_date;
+    public void setStart(Date start) {
+        this.start = start;
     }
 
-    public Date getEnd_date() {
-        return end_date;
+    public Date getEnd() {
+        return end;
     }
 
-    public void setEnd_date(Date end_date) {
-        this.end_date = end_date;
+    public void setEnd(Date end) {
+        this.end = end;
+    }
+
+
+    public int getGuests() {
+        return guests;
+    }
+
+    public void setGuests(int guests) {
+        this.guests = guests;
     }
 
     public boolean getCancelled() {

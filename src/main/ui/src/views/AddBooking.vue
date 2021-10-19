@@ -59,7 +59,7 @@ export default {
         this.end.substring(6, 8);
         }
       let booking = {
-        listing_booked: this.$route.params.id,
+        listing_id: this.$route.params.id,
         user: this.user,
         fee: this.$route.params.fee,
         guests: this.guests,
@@ -67,8 +67,12 @@ export default {
         end: this.end,
       }
       console.log(booking);
-
-
+      let response = await(await fetch('http://localhost:4000/api/createbooking', {
+        method: 'Post',
+        body: JSON.stringify(booking),
+        credentials: 'include',
+      })).json();
+      console.log(response);
     }
   },
   mounted() {
