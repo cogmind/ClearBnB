@@ -8,20 +8,16 @@ export default createStore({
   mutations: {
     setUser(state, user) {
       state.user = user;
-      console.log("User set in store");
     },
     setUserId(state, userId) {
       state.userId = userId;
-      console.log("User ID set in store:", userId);
     }
   },
   getters: {
     getUserId: state => {
-      console.log("Retrieving user id...");
       return state.userId;
     },
     getUser: state => {
-      console.log('Retrieving user...');
       return state.user;
     }
   },

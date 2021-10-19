@@ -13,7 +13,7 @@
         {{ new Date(listing.start + 3600000).toISOString().split('T')[0] }} ―
         {{ new Date(listing.end + 3600000).toISOString().split('T')[0]}}</p>
       <p><br/><br/> {{listing.description}}</p>
-      <button type="button" @click="book($event, listing)">Book</button>
+      <button v-if="$store.getters.getUser !== null" type="button" @click="book($event, listing)">Book</button>
       <hr/>
       </li>
   </ul>
