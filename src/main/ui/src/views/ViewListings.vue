@@ -4,13 +4,14 @@
   <p>View Listings</p>
   <ul>
     <li v-for="(listing) in listings" v-bind:key="listing.listing_id">
-      <img :src="listing.image_url" width="300" alt="listed propery"/>
+      <img :src="listing.image_url" width="300" alt="listed property"/>
       <h3>{{ listing.title }}</h3>
       <p>{{ listing.price }} €</p>
       <p>Guests: {{ listing.guests }}</p>
       <p>Available:
-        {{ new Date(listing.start).toISOString().split('T')[0] }} ―
-        {{ new Date(listing.end).toISOString().split('T')[0]}}</p>
+        <!-- Hardcoded timezone offset -->
+        {{ new Date(listing.start + 3600000).toISOString().split('T')[0] }} ―
+        {{ new Date(listing.end + 3600000).toISOString().split('T')[0]}}</p>
       <p><br/><br/> {{listing.description}}</p>
       <button type="button" @click="book($event, listing)">Book</button>
       <hr/>
@@ -44,7 +45,7 @@ export default {
       name: 'book',
       params: {
         id: selectedListing.listing_id,
-        start: selectedListing.start,
+        start: selectedListing.start, // Hardcoded time-zone
         end: selectedListing.end,
         fee: selectedListing.price,
         guests: selectedListing.guests,

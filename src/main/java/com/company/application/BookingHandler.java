@@ -46,6 +46,13 @@ public class BookingHandler {
                 Date available_end = current_listing.getEnd();
 
                 // Check if dates are valid for a specific listing
+                System.out.println("----------------------------");
+                System.out.println("available_start: " + available_start);
+                System.out.println("booking_start: " + booking_start);
+                System.out.println("----------------------------");
+                System.out.println("available_end: " + available_end);
+                System.out.println("booking_end: " + booking_end);
+                System.out.println("----------------------------");
                 System.out.println("booking_start.compareTo(available_start): " + booking_start.compareTo(available_start));
                 System.out.println("booking_end.compareTo(available_end) <= 0: " + booking_end.compareTo(available_end));
                 if ((booking_start.compareTo(available_start) < 0) && (booking_end.compareTo(available_end) < 0)) {
