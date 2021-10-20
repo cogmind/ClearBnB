@@ -1,6 +1,7 @@
 <template>
   <p><router-link to="start">ClearBnB</router-link></p>
   <Navbar />
+  <FilterListings v-on:search="getFilteredListings()"/>
   <p>View Listings</p>
   <ul>
     <li v-for="(listing) in listings" v-bind:key="listing.listing_id">
@@ -28,10 +29,14 @@
 
 <script>
 import Navbar from "../components/Navbar.vue";
+import FilterListings from "../components/FilterListings.vue";
+
 export default {
-  name: "ViewListings",
+  name: 'ViewListings',
+  emits: ['search'],
   components: {
     Navbar,
+    FilterListings,
   },
   data() {
     return {
@@ -40,6 +45,9 @@ export default {
     };
   },
   methods: {
+    async getFilteredListings() {
+      this.listings = await (await fetch('/api/filtered-listings')).json();
+    },
     book(event, selectedListing){
       this.$router.push({
       name: 'book',

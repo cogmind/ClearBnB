@@ -19,6 +19,7 @@ public class ListingHandler {
         this.listingRepository = new ListingRepositoryImpl(this.entityManager);
         this.createListing();
         this.getListings();
+        this.getFilteredListings();
     }
 
     private void getListings() {
@@ -26,6 +27,14 @@ public class ListingHandler {
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
             res.json(listingRepository.getAll());
+        });
+    }
+
+    private void getFilteredListings() {
+        app.get("/api/filtered-listings", (req, res) -> {
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+            res.json(listingRepository.getFilteredListings());
         });
     }
 

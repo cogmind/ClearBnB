@@ -3,8 +3,10 @@ package com.company.infrastructure;
 import com.company.domain.Listing;
 import com.company.domain.ListingRepository;
 
-import express.Express;
 import jakarta.persistence.EntityManager;
+import org.hibernate.Filter;
+import org.hibernate.Session;
+
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
@@ -15,6 +17,18 @@ public class ListingRepositoryImpl implements ListingRepository {
 
     public ListingRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    @Override
+    public List<Listing> getFilteredListings(){
+        Session session = entityManager.unwrap(Session.class);
+        Filter priceFilter = session.enableFilter("priceFilter");
+        priceFilter.setParameter("priceComparison", 50000.0);
+
+        //List<ChessPlayer> chessPlayersAfterEnable = em.createQuery("select p from ChessPlayer p", ChessPlayer.class)
+        List<Listing> filteredListings = this.getAll();
+        session.close();
+        return filteredListings;
     }
 
     @Override

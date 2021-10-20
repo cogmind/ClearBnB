@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ListingRepository {
 
+    List<Listing> getFilteredListings();
     Listing getListingById(Long listing_id);
     List<Listing> getListingsByOwnerId(Long owner_id);
     Listing getListingByTitle(String title);

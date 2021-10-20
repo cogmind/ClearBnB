@@ -3,7 +3,7 @@
   <Navbar />
   <p>Bookings</p>
   <p>
-    {{ booking_id }}{{ listing_booked }}{{ user }}{{ fee }}{{ start_date
+    {{ booking_id }}{{ listing_id }}{{ user }}{{ fee }}{{ start_date
     }}{{ end_date }}{{ cancelled }}
   </p>
 </template>

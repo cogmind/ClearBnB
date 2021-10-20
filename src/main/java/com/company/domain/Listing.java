@@ -1,12 +1,20 @@
 package com.company.domain;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.Filters;
+import org.hibernate.annotations.ParamDef;
 
 import java.sql.Date;
 import java.sql.Timestamp;
 
 @Entity
 @Table(name="listing")
+@FilterDef(name="priceFilter", parameters=@ParamDef(name="priceComparison",type="double"))
+@Filters({
+        @Filter(name="priceFilter", condition="price <= :priceComparison")
+})
 public class Listing implements Cloneable {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
