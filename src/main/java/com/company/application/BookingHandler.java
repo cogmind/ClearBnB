@@ -8,6 +8,7 @@ import express.Express;
 import jakarta.persistence.EntityManager;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class BookingHandler {
@@ -36,14 +37,14 @@ public class BookingHandler {
             res.append("Access-Control-Allow-Credentials", "true");
 
             try {
-                Date booking_start = booking.getStart();
-                Date booking_end = booking.getEnd();
+                LocalDate booking_start = booking.getStart();
+                LocalDate booking_end = booking.getEnd();
 
                 // Retrieve listing from DB
                 ListingRepositoryImpl listingRepository = new ListingRepositoryImpl(this.entityManager);
                 Listing current_listing = listingRepository.getListingById(booking.getListing_id());
-                Date available_start = current_listing.getStart();
-                Date available_end = current_listing.getEnd();
+                LocalDate available_start = current_listing.getStart();
+                LocalDate available_end = current_listing.getEnd();
 
                 // Check if dates are valid for a specific listing
                 System.out.println("----------------------------");
@@ -62,8 +63,8 @@ public class BookingHandler {
                     BookingRepositoryImpl bookings = new BookingRepositoryImpl(entityManager);
                     List<Booking> bookingsForCurrentListing = bookings.getBookingsByListingId(current_listing.getListing_id());
 
-                    Date next_start;
-                    Date next_end;
+                    LocalDate next_start;
+                    LocalDate next_end;
                     for (Booking next_booking: bookingsForCurrentListing) {
                         next_start = next_booking.getStart();
                         next_end = next_booking.getEnd();

@@ -7,8 +7,8 @@ import jakarta.persistence.EntityManager;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +24,39 @@ public class ListingRepositoryImpl implements ListingRepository {
     @Override
     public List<Listing> getFilteredListings(Map<String, List<String>> queries) {
         session = entityManager.unwrap(Session.class);
-        Filter priceFilter = session.enableFilter("priceFilter");
-        System.out.println(queries.get("price").get(0));
-        double maxPrice = Double.parseDouble(queries.get("price").get(0));
-        priceFilter.setParameter("priceComparison", maxPrice);
+
+        if (!((queries.get("price").get(0).equals("") || queries.get("price").get(0).equals("undefined")))) {
+            System.out.println("FILTERING PRICE");
+            Filter priceFilter = session.enableFilter("priceFilter");
+            System.out.println("price: " + queries.get("price").get(0));
+
+            double maxPrice = Double.parseDouble(queries.get("price").get(0));
+            priceFilter.setParameter("priceComparison", maxPrice);
+        } else {
+            session.disableFilter("priceFilter");
+        }
+
+        if (!((queries.get("checkInDate").get(0).equals("") || queries.get("checkInDate").get(0).equals("undefined")))) {
+            Filter afterDateFilter = session.enableFilter("afterDateFilter");
+
+            String afterDate = queries.get("checkInDate").get(0);
+            LocalDate afterDateLocal = LocalDate.parse(afterDate);
+            System.out.println("After date: " + afterDateLocal);
+            afterDateFilter.setParameter("afterDateLocal", afterDateLocal);
+        } else {
+            session.disableFilter("afterDateFilter");
+        }
+
+        if (!((queries.get("checkOutDate").get(0).equals("") || queries.get("checkOutDate").get(0).equals("undefined")))) {
+            Filter beforeDateFilter = session.enableFilter("beforeDateFilter");
+
+            String beforeDate = queries.get("checkOutDate").get(0);
+            LocalDate beforeDateLocal = LocalDate.parse(beforeDate);
+            System.out.println("Before date: " + beforeDateLocal);
+            beforeDateFilter.setParameter("beforeDateLocal", beforeDateLocal);
+        } else {
+            session.disableFilter("beforeDateFilter");
+        }
 
         //List<ChessPlayer> chessPlayersAfterEnable = em.createQuery("select p from ChessPlayer p", ChessPlayer.class)
         List<Listing> filteredListings = this.getAll(true);
@@ -51,9 +80,15 @@ public class ListingRepositoryImpl implements ListingRepository {
 
     @Override
     public List<Listing> getAll(boolean filter) {
-        // TODO Disable all filters
+
         if (!filter && session != null) {
-            session.disableFilter("priceFilter");
+            try {
+                session.disableFilter("priceFilter");
+                session.disableFilter("beforeDateFilter");
+                session.disableFilter("afterDateFilter");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return entityManager.createQuery("FROM Listing").getResultList();
     }
@@ -72,7 +107,7 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public Listing update(Long listing_id, int version, Long owner_id, Timestamp audited_datetime, String title, String description, String image_url, String location, int guests, double price, Date listing_start_date, Date listing_end_date) {
+    public Listing update(Long listing_id, int version, Long owner_id, Timestamp audited_datetime, String title, String description, String image_url, String location, int guests, double price, LocalDate listing_start_date, LocalDate listing_end_date) {
         Listing listing = this.getListingById(listing_id);
         try {
             entityManager.getTransaction().begin();

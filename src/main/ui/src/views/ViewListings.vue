@@ -1,4 +1,4 @@
-<template>
+c<template>
   <p><router-link to="start">ClearBnB</router-link></p>
   <Navbar />
   <FilterListings v-on:search="getFilteredListings" />
@@ -7,13 +7,12 @@
     <li v-for="listing in listings" v-bind:key="listing.listing_id">
       <img :src="listing.image_url" width="300" alt="listed property" />
       <h3>{{ listing.title }}</h3>
+      <p><b>{{ listing.location }}</b></p>
       <p>{{ listing.price }} €</p>
       <p>Guests: {{ listing.guests }}</p>
       <p>
         Available:
-        <!-- Hardcoded timezone offset -->
-        {{ new Date(listing.start + 3600000).toISOString().split("T")[0] }} ―
-        {{ new Date(listing.end + 3600000).toISOString().split("T")[0] }}
+        {{formatDate(listing.start)}} ― {{formatDate(listing.end)}}
       </p>
       <p>
         <br /><br />
@@ -56,9 +55,16 @@ export default {
     };
   },
   methods: {
+    formatDate(localDate) {
+      let dayOfMonth = localDate.dayOfMonth.toString();
+      if (dayOfMonth.length == 1) {
+        dayOfMonth = '0' + dayOfMonth;
+      } else {
+        dayOfMonth = localDate.dayOfMonth;
+      }
+      return localDate.year + "-" + localDate.monthValue + "-" + dayOfMonth
+    },
     async getFilteredListings(search) {
-      console.log("getFilteredListings: search.title: ", search.title);
-
       let url = new URL("http://localhost:4000/api/search");
       for (let s in search) {
         url.searchParams.append(s, search[s]);

@@ -13,7 +13,7 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
         <class>com.company.domain.User</class>
         <class>com.company.domain.Listing</class>
-        <class>com.company.domain.Book</class>
+        <class>com.company.domain.Booking</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />

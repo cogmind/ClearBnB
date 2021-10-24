@@ -1,19 +1,24 @@
 package com.company.domain;
 
 import jakarta.persistence.*;
-import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.Filters;
-import org.hibernate.annotations.ParamDef;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import org.hibernate.annotations.*;
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 
 @Entity
 @Table(name="listing")
-@FilterDef(name="priceFilter", parameters=@ParamDef(name="priceComparison",type="double"))
+@FilterDefs({
+        @FilterDef(name="priceFilter", parameters=@ParamDef(name="priceComparison",type="double")),
+        @FilterDef(name="beforeDateFilter", parameters=@ParamDef(name="beforeDateLocal", type="LocalDate")),
+        @FilterDef(name="afterDateFilter", parameters=@ParamDef(name="afterDateLocal", type="LocalDate"))
+})
 @Filters({
-        @Filter(name="priceFilter", condition="price <= :priceComparison")
+        @Filter(name="priceFilter", condition="price <= :priceComparison"),
+        @Filter(name="beforeDateFilter", condition=":beforeDateLocal <= end"),
+        @Filter(name="afterDateFilter", condition=":afterDateLocal >= start")
 })
 public class Listing implements Cloneable {
     @Id
@@ -28,8 +33,8 @@ public class Listing implements Cloneable {
     private String location;
     private int guests;
     private double price;
-    private Date start;
-    private Date end;
+    private LocalDate start;
+    private LocalDate end;
 
     public Object clone() {
         Listing listing = new Listing();
@@ -118,19 +123,19 @@ public class Listing implements Cloneable {
         this.price = price;
     }
 
-    public Date getStart() {
+    public LocalDate getStart() {
         return start;
     }
 
-    public void setStart(Date start) {
+    public void setStart(LocalDate start) {
         this.start = start;
     }
 
-    public Date getEnd() {
+    public LocalDate getEnd() {
         return end;
     }
 
-    public void setEnd(Date end) {
+    public void setEnd(LocalDate end) {
         this.end = end;
     }
 }

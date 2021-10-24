@@ -4,8 +4,8 @@
     {{ listing.audited_datetime }} &#60;&#60;&#60;{{
       listing.title
     }}&#62;&#62;&#62; {{ listing.description }} {{ listing.image_url }}
-    {{ listing.guests }} {{ listing.price }} {{ listing.listing_start_date }}
-    {{ listing.listing_end_date }}
+    {{ listing.guests }} {{ listing.price }} {{ listing.start }}
+    {{ listing.end }}
   </p>
 </template>
 <script>

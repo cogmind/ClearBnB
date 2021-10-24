@@ -5,6 +5,7 @@ import com.company.domain.BookingRepository;
 import jakarta.persistence.EntityManager;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public class BookingRepositoryImpl implements BookingRepository {
@@ -47,7 +48,7 @@ public class BookingRepositoryImpl implements BookingRepository {
     }
 
     @Override
-    public Booking update(Long booking_id, Long listing_booked, Long user, double fee, Date start, Date end, boolean cancelled) {
+    public Booking update(Long booking_id, Long listing_booked, Long user, double fee, LocalDate start, LocalDate end, boolean cancelled) {
         Booking booking = this.getBookingById(booking_id);
 
         try {
