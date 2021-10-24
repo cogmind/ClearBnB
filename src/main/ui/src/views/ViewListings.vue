@@ -1,22 +1,33 @@
 <template>
   <p><router-link to="start">ClearBnB</router-link></p>
   <Navbar />
-  <FilterListings v-on:search="getFilteredListings()"/>
+  <FilterListings v-on:search="getFilteredListings" />
   <p>View Listings</p>
   <ul>
-    <li v-for="(listing) in listings" v-bind:key="listing.listing_id">
-      <img :src="listing.image_url" width="300" alt="listed property"/>
+    <li v-for="listing in listings" v-bind:key="listing.listing_id">
+      <img :src="listing.image_url" width="300" alt="listed property" />
       <h3>{{ listing.title }}</h3>
       <p>{{ listing.price }} €</p>
       <p>Guests: {{ listing.guests }}</p>
-      <p>Available:
+      <p>
+        Available:
         <!-- Hardcoded timezone offset -->
-        {{ new Date(listing.start + 3600000).toISOString().split('T')[0] }} ―
-        {{ new Date(listing.end + 3600000).toISOString().split('T')[0]}}</p>
-      <p><br/><br/> {{listing.description}}</p>
-      <button v-if="$store.getters.getUser !== null" type="button" @click="book($event, listing)">Book</button>
-      <hr/>
-      </li>
+        {{ new Date(listing.start + 3600000).toISOString().split("T")[0] }} ―
+        {{ new Date(listing.end + 3600000).toISOString().split("T")[0] }}
+      </p>
+      <p>
+        <br /><br />
+        {{ listing.description }}
+      </p>
+      <button
+        v-if="$store.getters.getUser !== null"
+        type="button"
+        @click="book($event, listing)"
+      >
+        Book
+      </button>
+      <hr />
+    </li>
   </ul>
 
   <!-- <ListingItem
@@ -32,8 +43,8 @@ import Navbar from "../components/Navbar.vue";
 import FilterListings from "../components/FilterListings.vue";
 
 export default {
-  name: 'ViewListings',
-  emits: ['search'],
+  name: "ViewListings",
+  emits: ["search"],
   components: {
     Navbar,
     FilterListings,
@@ -45,34 +56,41 @@ export default {
     };
   },
   methods: {
-    async getFilteredListings() {
-      this.listings = await (await fetch('/api/filtered-listings')).json();
-    },
-    book(event, selectedListing){
-      this.$router.push({
-      name: 'book',
-      params: {
-        id: selectedListing.listing_id,
-        start: selectedListing.start, // Hardcoded time-zone
-        end: selectedListing.end,
-        fee: selectedListing.price,
-        guests: selectedListing.guests,
-        }
-    });
+    async getFilteredListings(search) {
+      console.log("getFilteredListings: search.title: ", search.title);
 
+      let url = new URL("http://localhost:4000/api/search");
+      for (let s in search) {
+        url.searchParams.append(s, search[s]);
+      }
+      this.listings = await (
+        await fetch(url)
+      ).json();
+    },
+    book(event, selectedListing) {
+      this.$router.push({
+        name: "book",
+        params: {
+          id: selectedListing.listing_id,
+          start: selectedListing.start,
+          end: selectedListing.end,
+          fee: selectedListing.price,
+          guests: selectedListing.guests,
+        },
+      });
     },
   },
   async beforeMount() {
     this.listings = await (await fetch("/api/listings")).json();
-    console.log(this.listings)
+    //console.log('Listings: ',this.listings);
   },
-}
+};
 </script>
 
 <style scoped>
 ul {
   list-style-type: none;
-  padding-left:0;
+  padding-left: 0;
 }
 button {
   padding: 20px;

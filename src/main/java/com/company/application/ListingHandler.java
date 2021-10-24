@@ -26,15 +26,16 @@ public class ListingHandler {
         app.get("/api/listings", (req, res) -> {
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-            res.json(listingRepository.getAll());
+            res.json(listingRepository.getAll(false));
         });
     }
 
     private void getFilteredListings() {
-        app.get("/api/filtered-listings", (req, res) -> {
+        app.get("/api/search", (req, res) -> {
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-            res.json(listingRepository.getFilteredListings());
+            System.out.println("QUERIES: " + req.query());
+            res.json(listingRepository.getFilteredListings(req.query()));
         });
     }
 

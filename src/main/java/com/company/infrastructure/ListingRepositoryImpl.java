@@ -10,24 +10,28 @@ import org.hibernate.Session;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Map;
 
 public class ListingRepositoryImpl implements ListingRepository {
 
     private final EntityManager entityManager;
+    private Session session;
 
     public ListingRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
     @Override
-    public List<Listing> getFilteredListings(){
-        Session session = entityManager.unwrap(Session.class);
+    public List<Listing> getFilteredListings(Map<String, List<String>> queries) {
+        session = entityManager.unwrap(Session.class);
         Filter priceFilter = session.enableFilter("priceFilter");
-        priceFilter.setParameter("priceComparison", 50000.0);
+        System.out.println(queries.get("price").get(0));
+        double maxPrice = Double.parseDouble(queries.get("price").get(0));
+        priceFilter.setParameter("priceComparison", maxPrice);
 
         //List<ChessPlayer> chessPlayersAfterEnable = em.createQuery("select p from ChessPlayer p", ChessPlayer.class)
-        List<Listing> filteredListings = this.getAll();
-        session.close();
+        List<Listing> filteredListings = this.getAll(true);
+        //session.close();
         return filteredListings;
     }
 
@@ -46,7 +50,11 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public List<Listing> getAll() {
+    public List<Listing> getAll(boolean filter) {
+        // TODO Disable all filters
+        if (!filter && session != null) {
+            session.disableFilter("priceFilter");
+        }
         return entityManager.createQuery("FROM Listing").getResultList();
     }
 
