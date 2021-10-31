@@ -24,6 +24,16 @@ public class UserHandler {
         this.whoami();
         this.getId();
         this.remove();
+        this.getAllUsers();
+    }
+
+    private void getAllUsers() {
+        app.get("/api/users", (req, res) -> {
+            System.out.println("GETTING ALL USERS");
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+            res.send(userRepository.getAll());
+        });
     }
 
     private void getId() {

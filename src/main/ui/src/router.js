@@ -10,7 +10,7 @@ import Logout from "./views/Logout.vue";
 import Register from "./views/Register.vue";
 import Chat from "./views/Chat.vue";
 import MyProfile from "./views/MyProfile.vue";
-import BrowseProfiles from "./views/BrowseProfiles.vue";
+import Profiles from "./views/Profiles.vue";
 import Profile from "./views/Profile.vue";
 
 export default createRouter({
@@ -51,10 +51,11 @@ export default createRouter({
       path: '/my-profile',
       component: MyProfile,
     }, {
-      path: '/browse-profiles',
-      component: BrowseProfiles,
+      path: '/profiles',
+      component: Profiles,
     }, {
-      path: '/profile/:id',
+      path: '/profile/:username:id',
+      name: 'profile',
       component: Profile,
     },
   ],

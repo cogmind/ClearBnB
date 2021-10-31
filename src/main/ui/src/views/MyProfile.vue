@@ -5,7 +5,6 @@
   <p>Profile page for {{username}}</p>
   <hr>
   <h2>Listings</h2>
-  <hr>
   <ol>
     <li v-for="listing in listings" v-bind:key="listing.listing_id">
       <img :src="listing.image_url" width="300" alt="listed property" />
@@ -23,6 +22,7 @@
       </p>
     </li>
   </ol>
+  <hr>
   <h2>Bookings</h2>
   <ol>
     <li v-for="booking in bookings" v-bind:key="booking.booking_id">
