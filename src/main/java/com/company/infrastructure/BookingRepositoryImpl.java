@@ -4,7 +4,6 @@ import com.company.domain.Booking;
 import com.company.domain.BookingRepository;
 import jakarta.persistence.EntityManager;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -21,6 +20,13 @@ public class BookingRepositoryImpl implements BookingRepository {
         return entityManager.createQuery("SELECT b FROM Booking b WHERE b.booking_id = :booking_id", Booking.class)
                 .setParameter("booking_id", booking_id)
                 .getSingleResult();
+    }
+
+    @Override
+    public List<Booking> getBookingsByOwnerId(Long user) {
+        return entityManager.createQuery("SELECT b FROM Booking b WHERE b.user = :user", Booking.class)
+                .setParameter("user", user)
+                .getResultList();
     }
 
     public List<Booking> getBookingsByListingId(Long listing_id) {

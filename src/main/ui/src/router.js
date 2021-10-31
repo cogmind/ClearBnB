@@ -9,6 +9,9 @@ import Login from "./views/Login.vue";
 import Logout from "./views/Logout.vue";
 import Register from "./views/Register.vue";
 import Chat from "./views/Chat.vue";
+import MyProfile from "./views/MyProfile.vue";
+import BrowseProfiles from "./views/BrowseProfiles.vue";
+import Profile from "./views/Profile.vue";
 
 export default createRouter({
   history: createWebHistory(),
@@ -44,6 +47,15 @@ export default createRouter({
     }, {
       path: '/chat',
       component: Chat,
+    }, {
+      path: '/my-profile',
+      component: MyProfile,
+    }, {
+      path: '/browse-profiles',
+      component: BrowseProfiles,
+    }, {
+      path: '/profile/:id',
+      component: Profile,
     },
   ],
 });

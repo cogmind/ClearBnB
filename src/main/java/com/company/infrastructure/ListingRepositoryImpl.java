@@ -38,6 +38,7 @@ public class ListingRepositoryImpl implements ListingRepository {
 
         if (!((queries.get("checkInDate").get(0).equals("") || queries.get("checkInDate").get(0).equals("undefined")))) {
             Filter afterDateFilter = session.enableFilter("afterDateFilter");
+            System.out.println("FILTERING CHECK IN DATE");
 
             String afterDate = queries.get("checkInDate").get(0);
             LocalDate afterDateLocal = LocalDate.parse(afterDate);
@@ -49,6 +50,7 @@ public class ListingRepositoryImpl implements ListingRepository {
 
         if (!((queries.get("checkOutDate").get(0).equals("") || queries.get("checkOutDate").get(0).equals("undefined")))) {
             Filter beforeDateFilter = session.enableFilter("beforeDateFilter");
+            System.out.println("FILTERING CHECK OUT DATE");
 
             String beforeDate = queries.get("checkOutDate").get(0);
             LocalDate beforeDateLocal = LocalDate.parse(beforeDate);

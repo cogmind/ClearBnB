@@ -7,7 +7,6 @@ import com.company.infrastructure.ListingRepositoryImpl;
 import express.Express;
 import jakarta.persistence.EntityManager;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -22,6 +21,17 @@ public class BookingHandler {
         this.bookingRepository = new BookingRepositoryImpl(this.entityManager);
         this.createBooking();
         this.viewBookings();
+        this.getBookingsByUserId();
+    }
+
+    private void getBookingsByUserId() {
+        app.get("/api/user-bookings/:user-id", (req, res) -> {
+            System.out.println("GET BOOKINGS BY USER ID");
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+            Long owner_id = Long.parseLong(req.params("user-id"));
+            res.json(bookingRepository.getBookingsByOwnerId(owner_id));
+        });
     }
 
     private void viewBookings() {

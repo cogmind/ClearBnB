@@ -20,6 +20,28 @@ public class ListingHandler {
         this.createListing();
         this.getListings();
         this.getFilteredListings();
+        this.getListingsByUserId();
+        this.getListingById();
+    }
+
+    private void getListingsByUserId() {
+        app.get("/api/user-listings/:user-id", (req, res) -> {
+            System.out.println("GET LISTINGS BY USER ID");
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+            Long owner_id = Long.parseLong(req.params("user-id"));
+            res.json(listingRepository.getListingsByOwnerId(owner_id));
+        });
+    }
+
+    private void getListingById() {
+        app.get("/api/listing/:id", (req, res) -> {
+            System.out.println("GET LISTING BY ID");
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+            Long id = Long.parseLong(req.params("id"));
+            res.json(listingRepository.getListingById(id));
+        });
     }
 
     private void getListings() {
