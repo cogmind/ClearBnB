@@ -54,7 +54,7 @@ export default createRouter({
       path: '/profiles',
       component: Profiles,
     }, {
-      path: '/profile/:username:id',
+      path: '/profile/:username/:id',
       name: 'profile',
       component: Profile,
     },

@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import org.hibernate.Filter;
 import org.hibernate.Session;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.List;
@@ -41,9 +42,9 @@ public class ListingRepositoryImpl implements ListingRepository {
             System.out.println("FILTERING CHECK IN DATE");
 
             String afterDate = queries.get("checkInDate").get(0);
-            LocalDate afterDateLocal = LocalDate.parse(afterDate);
-            System.out.println("After date: " + afterDateLocal);
-            afterDateFilter.setParameter("afterDateLocal", afterDateLocal);
+            System.out.println("afterDate: " + afterDate);
+            System.out.println("After date: " + afterDate);
+            afterDateFilter.setParameter("afterDate", afterDate);
         } else {
             session.disableFilter("afterDateFilter");
         }
@@ -109,7 +110,7 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public Listing update(Long listing_id, int version, Long owner_id, Timestamp audited_datetime, String title, String description, String image_url, String location, int guests, double price, LocalDate listing_start_date, LocalDate listing_end_date) {
+    public Listing update(Long listing_id, int version, Long owner_id, Timestamp audited_datetime, String title, String description, String image_url, String location, int guests, double price, Date listing_start_date, Date listing_end_date) {
         Listing listing = this.getListingById(listing_id);
         try {
             entityManager.getTransaction().begin();

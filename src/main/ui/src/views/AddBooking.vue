@@ -5,11 +5,11 @@
 <p>Max guests: {{ this.max_guests }}</p>
 <input v-model="guests" type="text" placeholder="Guests">
 <br><br><br>
-Earliest {{ new Date(+this.available_start).toISOString().split('T')[0] }} (YYYYMMDD)
+Earliest {{ this.available_start }} (YYYYMMDD)
 <br>
 <input v-model="start" type="text" placeholder="From">
 <br><br><br>
-Latest {{ new Date(+this.available_end).toISOString().split('T')[0] }} (YYYYMMDD)
+Latest {{ this.available_end }} (YYYYMMDD)
 <br>
 <input v-model="end" type="text" placeholder="To">
 <br><br>
@@ -63,8 +63,8 @@ export default {
         user: this.user,
         fee: this.$route.params.fee,
         guests: this.guests,
-        start: this.start,
-        end: this.end,
+        start: this.toDate(this.start),
+        end: this.toDate(this.end),
       }
       console.log(booking);
       let response = await(await fetch('http://localhost:4000/api/createbooking', {
@@ -73,11 +73,23 @@ export default {
         credentials: 'include',
       })).json();
       console.log(response);
-    }
+    },
+    toDate(isoString) {
+      let year = isoString.substring(0, 4);
+      let month = isoString.substring(5, 7);
+      if (month[0] === '0') {
+        month = month[1];
+      }
+      month = month - 1;
+      let day = isoString.substring(8, 10);
+      if (day[0] === '0') {
+        day = day[1];
+      }
+      return new Date(year, month, day);
+    },
   },
   mounted() {
     this.listing = this.$route.params;
-    console.log('Params: ', this.$route.params);
   },
 }
 </script>

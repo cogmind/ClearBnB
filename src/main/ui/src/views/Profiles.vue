@@ -1,10 +1,12 @@
 <template>
-  <p><router-link to="start">ClearBnB</router-link></p>
-  <Navbar />
-  <p>Browse Profiles</p>
+<p><router-link to="start">ClearBnB</router-link></p>
+<Navbar />
+<p>Browse Profiles</p>
+<div class="outer">
   <p v-for="user in users" v-bind:key="user.userId">
-    <router-link :to="'/profile/' + user.username + user.userId">{{ user.username }}</router-link>
+    <router-link :to="'/profile/' + user.username + '/' + user.userId">{{ user.username }}</router-link>
   </p>
+</div>
 </template>
 
 <script>
@@ -34,5 +36,8 @@ export default {
 </script>
 
 <style scoped>
-
+.outer {
+  width: 100%;
+  margin-left: 5rem;
+}
 </style>

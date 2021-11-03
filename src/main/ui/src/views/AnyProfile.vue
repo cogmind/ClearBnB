@@ -1,8 +1,6 @@
 <template>
 <div>
-  <p><router-link to="start">ClearBnB</router-link></p>
-  <Navbar />
-  <p>Profile page for {{ username }}</p>
+  <h1>Profile page for {{ username }}</h1>
   <hr>
   <h2>Listings</h2>
   <ol>
@@ -59,8 +57,8 @@ export default {
   },
   async created() {
     
-    this.username = this.$store.getters.getUser.username;
-    this.userId = this.$store.getters.getUserId;
+    this.userId = this.$route.params.id;
+    this.username = this.$route.params.username;
     
     // Get listings
     this.listings = await (await fetch('http://localhost:4000/api/user-listings/' + this.userId)).json();
@@ -73,9 +71,7 @@ export default {
     for (let booking of this.bookings) {
       listingId = booking.listing_id;
       this.bookedListings.push({id: listingId, listing: await (await fetch('http://localhost:4000/api/listing/' + listingId)).json()});
-      console.log('pushed 1 listing onto bookedListings')
     }
-    console.log('this.bookedListings ', this.bookedListings);
   },
   methods: {
     formatDate(localDate) {

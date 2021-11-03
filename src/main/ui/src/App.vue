@@ -9,7 +9,6 @@ export default {
     return {};
   },
   async mounted(){
-    console.log('mounted');
     // Logout if user exits tab or browser
     document.addEventListener('visibilitychange', () => {
       this.$store.dispatch('logout');

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.sql.Date;
 import java.time.LocalDate;
 
+
 @Entity
 @Table(name="booking")
 public class Booking {
@@ -14,8 +15,8 @@ public class Booking {
     Long listing_id;
     Long user;
     double fee;
-    LocalDate start;
-    LocalDate end;
+    Date start;
+    Date end;
     int guests;
     boolean cancelled;
 
@@ -51,22 +52,21 @@ public class Booking {
         this.fee = fee;
     }
 
-    public LocalDate getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(LocalDate start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public LocalDate getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
-
 
     public int getGuests() {
         return guests;

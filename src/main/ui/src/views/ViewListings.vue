@@ -55,14 +55,22 @@ export default {
     };
   },
   methods: {
-    formatDate(localDate) {
-      let dayOfMonth = localDate.dayOfMonth.toString();
-      if (dayOfMonth.length == 1) {
-        dayOfMonth = '0' + dayOfMonth;
+    formatDate(date) {
+      date = new Date(date);
+      let month;
+      if (date.getMonth().toString().length === 1) {
+        month = '0' + date.getMonth();
       } else {
-        dayOfMonth = localDate.dayOfMonth;
+        month = date.getMonth().toString();
       }
-      return localDate.year + "-" + localDate.monthValue + "-" + dayOfMonth
+      let day;
+      if (date.getDay().toString().length === 1) {
+        day = '0' + date.getDay();
+      } else {
+        day = date.getDay();
+      }
+      date = date.getFullYear() + '-' + month + '-' + day;
+      return date;
     },
     async getFilteredListings(search) {
       let url = new URL("http://localhost:4000/api/search");
@@ -78,8 +86,8 @@ export default {
         name: "book",
         params: {
           id: selectedListing.listing_id,
-          start: selectedListing.start,
-          end: selectedListing.end,
+          start: this.formatDate(selectedListing.start),
+          end: this.formatDate(selectedListing.end),
           fee: selectedListing.price,
           guests: selectedListing.guests,
         },

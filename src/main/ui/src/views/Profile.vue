@@ -1,15 +1,23 @@
 <template>
-  <p>Profile</p>
-  <p>{{ this.$route.params.username }}</p>
-  <MyProfile v-bind:userId="this.$route.params.id"/>
+<p><router-link to="/">ClearBnB</router-link></p>
+<Navbar />
+  <AnyProfile v-bind:userId="this.id"/>
 </template>
 
 <script>
-import './MyProfile.vue';
+import AnyProfile from './AnyProfile.vue';
+import Navbar from '../components/Navbar.vue';
 
 export default {
   components: {
-    MyProfile,
+    AnyProfile,
+    Navbar
+  },
+  data () {
+    return {
+      username: this.$route.params.username,
+      id: this.$route.params.id,
+    }
   },
   methods:
   {

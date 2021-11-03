@@ -5,20 +5,20 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import org.hibernate.annotations.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 @Entity
 @Table(name="listing")
 @FilterDefs({
         @FilterDef(name="priceFilter", parameters=@ParamDef(name="priceComparison",type="double")),
-        @FilterDef(name="beforeDateFilter", parameters=@ParamDef(name="beforeDateLocal", type="LocalDate")),
-        @FilterDef(name="afterDateFilter", parameters=@ParamDef(name="afterDateLocal", type="LocalDate"))
+        @FilterDef(name="beforeDateFilter", parameters=@ParamDef(name="beforeDate", type="Date")),
+        @FilterDef(name="afterDateFilter", parameters=@ParamDef(name="afterDate", type="Date"))
 })
 @Filters({
         @Filter(name="priceFilter", condition="price <= :priceComparison"),
-        @Filter(name="beforeDateFilter", condition=":beforeDateLocal <= end"),
-        @Filter(name="afterDateFilter", condition=":afterDateLocal >= start")
+        @Filter(name="beforeDateFilter", condition=":beforeDate <= end"),
+        @Filter(name="afterDateFilter", condition=":afterDate >= start")
 })
 public class Listing implements Cloneable {
     @Id
@@ -33,8 +33,8 @@ public class Listing implements Cloneable {
     private String location;
     private int guests;
     private double price;
-    private LocalDate start;
-    private LocalDate end;
+    private Date start;
+    private Date end;
 
     public Object clone() {
         Listing listing = new Listing();
@@ -123,19 +123,19 @@ public class Listing implements Cloneable {
         this.price = price;
     }
 
-    public LocalDate getStart() {
+    public Date getStart() {
         return start;
     }
 
-    public void setStart(LocalDate start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 
-    public LocalDate getEnd() {
+    public Date getEnd() {
         return end;
     }
 
-    public void setEnd(LocalDate end) {
+    public void setEnd(Date end) {
         this.end = end;
     }
 }

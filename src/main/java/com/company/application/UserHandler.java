@@ -23,8 +23,36 @@ public class UserHandler {
         this.logout();
         this.whoami();
         this.getId();
+        this.getAnyId();
         this.remove();
         this.getAllUsers();
+        this.getAnyUsername();
+    }
+
+    private void getAnyId() {
+        app.get("/api/user/:id", (req, res) -> {
+            System.out.println("Getting user id...");
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+
+            Long id = Long.parseLong(req.params("id"));
+            User user = userRepository.getById(id);
+            System.out.println(user.getUserId());
+            res.send(user.getUserId());
+        });
+    }
+
+    private void getAnyUsername() {
+        app.get("/api/username/:id", (req, res) -> {
+            System.out.println("Getting username...");
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+
+            Long id = Long.parseLong(req.params("id"));
+            User user = userRepository.getById(id);
+            System.out.println(user.getUsername());
+            res.send(user.getUsername());
+        });
     }
 
     private void getAllUsers() {

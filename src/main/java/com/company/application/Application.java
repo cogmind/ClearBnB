@@ -6,7 +6,6 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 
 import java.sql.Connection;
-import java.util.List;
 
 public class Application {
     // Java Express
