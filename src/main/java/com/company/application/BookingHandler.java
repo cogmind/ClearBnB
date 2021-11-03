@@ -15,6 +15,7 @@ public class BookingHandler {
     Express app;
     EntityManager entityManager;
     BookingRepositoryImpl bookingRepository;
+    double PROFIT_MARGIN = 0.15;
 
     public BookingHandler(Express app, EntityManager entityManager) {
         this.app = app;
@@ -46,10 +47,19 @@ public class BookingHandler {
             Booking booking = req.body(Booking.class);
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-
+            
             try {
                 Date booking_start = booking.getStart();
                 Date booking_end = booking.getEnd();
+
+                // Compute fee based on number of days of stay and price per night
+                long days = (booking_end.getTime() - booking_start.getTime()) / (1000 * 60 * 60 * 24) + 1;
+                System.out.println("Number of days: " + days);
+                double fee = booking.getFee() * days;
+
+                // Add profit margin
+                fee = fee * (1.0 + PROFIT_MARGIN);
+                booking.setFee(fee);
 
                 // Retrieve listing from DB
                 ListingRepositoryImpl listingRepository = new ListingRepositoryImpl(this.entityManager);
