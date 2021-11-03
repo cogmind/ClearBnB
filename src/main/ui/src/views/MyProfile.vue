@@ -35,9 +35,18 @@
       <br>
       <p>Fee: {{ booking.fee }}</p>
       {{ formatDate(booking.start) }} ― {{ formatDate(booking.end )}}
-      <p>
-        <br /><br />
-      </p>
+      <br><br>
+      <div v-if="!isReviewed()">
+        <textarea rows="8" cols="35" name="comment" placeholder="Add review"/>
+        <br>
+        <input type="text" name="rating" placeholder="Rating (1-5)" size="5" maxlength="1"/>
+        <br><br>
+        <button type="button">Add Review</button>
+        <br><br>
+      </div>
+      <div v-if="isReviewed()">
+        <ReviewItem :comment="comment" :rating="rating" />
+      </div>
     </li>
   </ol>
 </div>
@@ -45,9 +54,11 @@
 
 <script>
 import Navbar from "../components/Navbar.vue";
+import ReviewItem from "../components/ReviewItem.vue";
 
 export default {
-  components: { Navbar },
+  name: 'MyProfile',
+  components: { Navbar, ReviewItem },
   data() {
     return {
       username: "",
@@ -55,6 +66,8 @@ export default {
       listings: [],
       bookings: [],
       bookedListings: [],
+      comment: "test comment parent",
+      rating: [1,1,1,1,1],
       }
   },
   async created() {
@@ -78,14 +91,25 @@ export default {
     console.log('this.bookedListings ', this.bookedListings);
   },
   methods: {
-    formatDate(localDate) {
-      let dayOfMonth = localDate.dayOfMonth.toString();
-      if (dayOfMonth.length == 1) {
-        dayOfMonth = '0' + dayOfMonth;
+    isReviewed() {
+      return true;
+    },
+    formatDate(date) {
+      date = new Date(date);
+      let month;
+      if (date.getMonth().toString().length === 1) {
+        month = '0' + date.getMonth();
       } else {
-        dayOfMonth = localDate.dayOfMonth;
+        month = date.getMonth().toString();
       }
-      return localDate.year + "-" + localDate.monthValue + "-" + dayOfMonth
+      let day;
+      if (date.getDay().toString().length === 1) {
+        day = '0' + date.getDay();
+      } else {
+        day = date.getDay();
+      }
+      date = date.getFullYear() + '-' + month + '-' + day;
+      return date;
     },
     getTitle(listingId) {
       let listing = this.bookedListings.find(currentListing => currentListing.id === listingId).listing;
@@ -99,6 +123,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

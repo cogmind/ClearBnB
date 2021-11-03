@@ -47,7 +47,7 @@ public class BookingHandler {
             Booking booking = req.body(Booking.class);
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
-            
+
             try {
                 Date booking_start = booking.getStart();
                 Date booking_end = booking.getEnd();
