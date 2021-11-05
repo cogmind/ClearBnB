@@ -9,7 +9,8 @@ import org.hibernate.Session;
 
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -23,7 +24,7 @@ public class ListingRepositoryImpl implements ListingRepository {
     }
 
     @Override
-    public List<Listing> getFilteredListings(Map<String, List<String>> queries) {
+    public List<Listing> getFilteredListings(Map<String, List<String>> queries) throws ParseException {
         session = entityManager.unwrap(Session.class);
 
         if (!((queries.get("price").get(0).equals("") || queries.get("price").get(0).equals("undefined")))) {
@@ -43,8 +44,10 @@ public class ListingRepositoryImpl implements ListingRepository {
 
             String afterDate = queries.get("checkInDate").get(0);
             System.out.println("afterDate: " + afterDate);
-            System.out.println("After date: " + afterDate);
-            afterDateFilter.setParameter("afterDate", afterDate);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedAfterDate = (Date) df.parse(afterDate);
+            System.out.println("After date: " + parsedAfterDate);
+            afterDateFilter.setParameter("afterDate", parsedAfterDate);
         } else {
             session.disableFilter("afterDateFilter");
         }
@@ -54,9 +57,10 @@ public class ListingRepositoryImpl implements ListingRepository {
             System.out.println("FILTERING CHECK OUT DATE");
 
             String beforeDate = queries.get("checkOutDate").get(0);
-            LocalDate beforeDateLocal = LocalDate.parse(beforeDate);
-            System.out.println("Before date: " + beforeDateLocal);
-            beforeDateFilter.setParameter("beforeDateLocal", beforeDateLocal);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            Date parsedBeforeDate = (Date) df.parse(beforeDate);
+            System.out.println("Before date: " + parsedBeforeDate);
+            beforeDateFilter.setParameter("beforeDateLocal", parsedBeforeDate);
         } else {
             session.disableFilter("beforeDateFilter");
         }
@@ -136,10 +140,10 @@ public class ListingRepositoryImpl implements ListingRepository {
                 listing.setPrice(price);
             }
             if (listing_start_date != null) {
-                listing.setStart(listing_start_date);
+                listing.setStart_date(listing_start_date);
             }
             if (listing_end_date != null) {
-                listing.setEnd(listing_end_date);
+                listing.setEnd_date(listing_end_date);
             }
 
             entityManager.getTransaction().commit();

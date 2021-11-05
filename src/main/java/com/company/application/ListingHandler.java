@@ -6,6 +6,7 @@ import com.company.infrastructure.ListingRepositoryImpl;
 import express.Express;
 import jakarta.persistence.EntityManager;
 
+import java.text.ParseException;
 import java.util.List;
 
 public class ListingHandler {
@@ -57,7 +58,11 @@ public class ListingHandler {
             res.append("Access-Control-Allow-Origin", "http://localhost:3000");
             res.append("Access-Control-Allow-Credentials", "true");
             System.out.println("QUERIES: " + req.query());
-            res.json(listingRepository.getFilteredListings(req.query()));
+            try {
+                res.json(listingRepository.getFilteredListings(req.query()));
+            } catch (ParseException pe) {
+                pe.printStackTrace();
+            }
         });
     }
 

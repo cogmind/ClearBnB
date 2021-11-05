@@ -24,6 +24,7 @@ public class Application {
         UserHandler userHandler = new UserHandler(app, em);
         ListingHandler listingHandler = new ListingHandler(app, em);
         BookingHandler bookingHandler = new BookingHandler(app, em);
+        ReviewHandler reviewHandler = new ReviewHandler(app, em);
         //ReviewHandler
         //ChatHandler
     }

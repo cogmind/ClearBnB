@@ -5,6 +5,8 @@ import com.company.domain.Review;
 import com.company.domain.ReviewRepository;
 import jakarta.persistence.EntityManager;
 
+import java.util.List;
+
 public class ReviewRepositoryImpl implements ReviewRepository {
 
     private final EntityManager entityManager;
@@ -21,6 +23,18 @@ public class ReviewRepositoryImpl implements ReviewRepository {
     }
 
     @Override
+    public List<Review> getReviewsByBookingId(Long booking_id) {
+        return entityManager.createQuery("SELECT r FROM Review r WHERE r.targetId = :targetId", Review.class)
+                .setParameter("targetId", booking_id)
+                .getResultList();
+    }
+
+    @Override
+    public List<Review> getAllReviews() {
+        return entityManager.createQuery("FROM Review", Review.class).getResultList();
+    }
+
+    @Override
     public Review save(Review review) {
         try {
             entityManager.getTransaction().begin();
@@ -32,4 +46,5 @@ public class ReviewRepositoryImpl implements ReviewRepository {
             return null;
         }
     }
+
 }

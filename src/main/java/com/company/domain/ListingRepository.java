@@ -2,12 +2,13 @@ package com.company.domain;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
 public interface ListingRepository {
 
-    List<Listing> getFilteredListings(Map<String, List<String>> queries);
+    List<Listing> getFilteredListings(Map<String, List<String>> queries) throws ParseException;
     Listing getListingById(Long listing_id);
     List<Listing> getListingsByOwnerId(Long owner_id);
     Listing getListingByTitle(String title);

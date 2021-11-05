@@ -3,7 +3,6 @@ package com.company.domain;
 import jakarta.persistence.*;
 
 import java.sql.Date;
-import java.time.LocalDate;
 
 
 @Entity
@@ -15,8 +14,8 @@ public class Booking {
     Long listing_id;
     Long user;
     double fee;
-    Date start;
-    Date end;
+    Date start_date;
+    Date end_date;
     int guests;
     boolean cancelled;
     double available_funds;
@@ -53,20 +52,20 @@ public class Booking {
         this.fee = fee;
     }
 
-    public Date getStart() {
-        return start;
+    public Date getStart_date() {
+        return start_date;
     }
 
-    public void setStart(Date start) {
-        this.start = start;
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
     }
 
-    public Date getEnd() {
-        return end;
+    public Date getEnd_date() {
+        return end_date;
     }
 
-    public void setEnd(Date end) {
-        this.end = end;
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
     }
 
     public int getGuests() {

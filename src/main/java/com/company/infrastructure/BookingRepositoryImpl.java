@@ -5,7 +5,6 @@ import com.company.domain.BookingRepository;
 import jakarta.persistence.EntityManager;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 public class BookingRepositoryImpl implements BookingRepository {
@@ -69,10 +68,10 @@ public class BookingRepositoryImpl implements BookingRepository {
                 booking.setFee(fee);
             }
             if (start != null) {
-                booking.setStart(start);
+                booking.setStart_date(start);
             }
             if (end != null) {
-                booking.setEnd(end);
+                booking.setEnd_date(end);
             }
             booking.setCancelled(cancelled);
 

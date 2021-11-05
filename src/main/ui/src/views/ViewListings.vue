@@ -7,12 +7,12 @@ c<template>
     <li v-for="listing in listings" v-bind:key="listing.listing_id">
       <img :src="listing.image_url" width="300" alt="listed property" />
       <h3>{{ listing.title }}</h3>
-      <p><b>{{ listing.location }}</b></p>
+      <p><strong>{{ listing.location }}</strong></p>
       <p>{{ listing.price }} €</p>
       <p>Guests: {{ listing.guests }}</p>
       <p>
         Available:
-        {{formatDate(listing.start)}} ― {{formatDate(listing.end)}}
+        {{ formatDate(listing.start_date) }} ― {{ formatDate(listing.end_date) }}
       </p>
       <p>
         <br /><br />
@@ -28,13 +28,6 @@ c<template>
       <hr />
     </li>
   </ul>
-
-  <!-- <ListingItem
-    v-for="(listing, index) of listings"
-    :key="index"
-    :listing="listing"
-    @filter="filterListings"
-  /> -->
 </template>
 
 <script>
@@ -55,8 +48,9 @@ export default {
     };
   },
   methods: {
-    formatDate(date) {
-      date = new Date(date);
+    formatDate(in_date) {
+      let date = new Date(in_date);
+
       let month;
       if (date.getMonth().toString().length === 1) {
         month = '0' + date.getMonth();
@@ -86,8 +80,8 @@ export default {
         name: "book",
         params: {
           id: selectedListing.listing_id,
-          start: this.formatDate(selectedListing.start),
-          end: this.formatDate(selectedListing.end),
+          start: this.formatDate(selectedListing.start_date),
+          end: this.formatDate(selectedListing.end_date),
           fee: selectedListing.price,
           guests: selectedListing.guests,
         },
@@ -96,7 +90,7 @@ export default {
   },
   async beforeMount() {
     this.listings = await (await fetch("/api/listings")).json();
-    //console.log('Listings: ',this.listings);
+    console.log('Listings: ', this.listings);
   },
 };
 </script>

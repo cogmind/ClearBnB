@@ -78,8 +78,8 @@ export default {
         location: this.location,
         guests: this.guests,
         price: this.price,
-        start: this.start,
-        end: this.end,
+        start_date: this.start,
+        end_date: this.end,
         audited_datetime: this.audited_datetime,
       };
 

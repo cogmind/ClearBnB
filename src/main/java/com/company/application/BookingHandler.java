@@ -10,7 +10,6 @@ import express.Express;
 import jakarta.persistence.EntityManager;
 
 import java.sql.Date;
-import java.time.LocalDate;
 import java.util.List;
 
 public class BookingHandler {
@@ -51,8 +50,8 @@ public class BookingHandler {
             res.append("Access-Control-Allow-Credentials", "true");
 
             try {
-                Date booking_start = booking.getStart();
-                Date booking_end = booking.getEnd();
+                Date booking_start = booking.getStart_date();
+                Date booking_end = booking.getEnd_date();
 
                 // Compute fee based on number of days of stay and price per night
                 long days = (booking_end.getTime() - booking_start.getTime()) / (1000 * 60 * 60 * 24) + 1;
@@ -72,8 +71,8 @@ public class BookingHandler {
                     // Retrieve listing from DB
                     ListingRepositoryImpl listingRepository = new ListingRepositoryImpl(this.entityManager);
                     Listing current_listing = listingRepository.getListingById(booking.getListing_id());
-                    Date available_start = current_listing.getStart();
-                    Date available_end = current_listing.getEnd();
+                    Date available_start = current_listing.getStart_date();
+                    Date available_end = current_listing.getEnd_date();
 
                     // Check if dates are valid for a specific listing
                     System.out.println("----------------------------");
@@ -95,8 +94,8 @@ public class BookingHandler {
                         Date next_start;
                         Date next_end;
                         for (Booking next_booking : bookingsForCurrentListing) {
-                            next_start = next_booking.getStart();
-                            next_end = next_booking.getEnd();
+                            next_start = next_booking.getStart_date();
+                            next_end = next_booking.getEnd_date();
                             if (!(booking_start.compareTo(next_end) >= 0 || booking_end.compareTo(next_start) <= 0)) {
                                 res.json("ERROR: Booking overlaps with an existing booking.");
                                 return;

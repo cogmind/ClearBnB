@@ -67,8 +67,8 @@ export default {
         user: this.user,
         fee: this.$route.params.fee,
         guests: this.guests,
-        start: this.toDate(this.start),
-        end: this.toDate(this.end),
+        start_date: this.toDate(this.start),
+        end_date: this.toDate(this.end),
         available_funds: funds,
       }
       console.log(booking);
@@ -89,8 +89,8 @@ export default {
       if (month[0] === '0') {
         month = month[1];
       }
-      month = month - 1;
       let day = isoString.substring(8, 10);
+      console.log('day: ', day);
       if (day[0] === '0') {
         day = day[1];
       }

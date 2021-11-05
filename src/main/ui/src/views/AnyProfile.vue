@@ -12,7 +12,7 @@
       <p>Guests: {{ listing.guests }}</p>
       <p>
         Available:
-        {{ formatDate(listing.start) }} ― {{ formatDate(listing.end) }}
+        {{ formatDate(listing.start_date) }} ― {{ formatDate(listing.end_date) }}
       </p>
       <p>
         <br /><br />
@@ -32,7 +32,11 @@
       Guests: {{ booking.guests }}
       <br>
       <p>Fee: {{ booking.fee }}</p>
-      {{ formatDate(booking.start) }} ― {{ formatDate(booking.end )}}
+      {{ formatDate(booking.start_date) }} ― {{ formatDate(booking.end_date )}}
+      <p>Reviews</p>
+      <p><strong>Rating</strong> <span v-for="star in reviewedBookings[0].reviews[0].rating" v-bind:key="star">⭐</span></p>
+      {{ reviewedBookings[0].reviews[0].comment }}
+      
       <p>
         <br /><br />
       </p>
@@ -53,6 +57,8 @@ export default {
       listings: [],
       bookings: [],
       bookedListings: [],
+      reviewedBookings: [],
+      reviews: [],
       }
   },
   async created() {
@@ -72,16 +78,42 @@ export default {
       listingId = booking.listing_id;
       this.bookedListings.push({id: listingId, listing: await (await fetch('http://localhost:4000/api/listing/' + listingId)).json()});
     }
+
+//      this.reviews = await (await fetch('http://localhost:4000/api/reviews')).json();
+
+    // Get reviews
+
+    this.reviews = await (await fetch('http://localhost:4000/api/reviews')).json();
+
+    let bookingId;
+    console.log(this.reviews);
+    for (let review of this.reviews) {
+      bookingId = review.targetId;
+      console.log('bookingId ', bookingId);
+      this.reviewedBookings.push({id: bookingId, reviews: await (await fetch('http://localhost:4000/api/booking-reviews/' + bookingId)).json()});
+    }
+
+    console.log('REVIEWTEST', this.reviewedBookings[0].reviews[0].comment);
+    console.log('REVIEWTEST', this.reviewedBookings);
   },
   methods: {
-    formatDate(localDate) {
-      let dayOfMonth = localDate.dayOfMonth.toString();
-      if (dayOfMonth.length == 1) {
-        dayOfMonth = '0' + dayOfMonth;
+    formatDate(in_date) {
+      let date = new Date(in_date);
+
+      let month;
+      if (date.getMonth().toString().length === 1) {
+        month = '0' + date.getMonth();
       } else {
-        dayOfMonth = localDate.dayOfMonth;
+        month = date.getMonth().toString();
       }
-      return localDate.year + "-" + localDate.monthValue + "-" + dayOfMonth
+      let day;
+      if (date.getDay().toString().length === 1) {
+        day = '0' + date.getDay();
+      } else {
+        day = date.getDay();
+      }
+      date = date.getFullYear() + '-' + month + '-' + day;
+      return date;
     },
     getTitle(listingId) {
       let listing = this.bookedListings.find(currentListing => currentListing.id === listingId).listing;
@@ -91,6 +123,15 @@ export default {
       let listing = this.bookedListings.find(currentListing => currentListing.id === listingId).listing;
       return listing.image_url;
     },
+    getReviewComment(booking_id) {
+      return this.reviews.find(currentReview => currentReview.reviewId === booking_id).comment;
+    },
+    getReviewRating(booking_id) {
+      return this.reviews.find(currentReview => currentReview.reviewId === booking_id).rating;
+    },
+    getReview(booking_id) {
+      return this.reviews.find(currentReview => currentReview.reviewId === booking_id);
+    }
   },
 }
 </script>
