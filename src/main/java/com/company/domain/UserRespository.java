@@ -11,5 +11,4 @@ import java.util.List;
      User save(User user);
      User update(Long id, String username, String password, String email, Double balance);
      User remove(Long id);
-
 }

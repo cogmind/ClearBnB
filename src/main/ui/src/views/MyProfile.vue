@@ -37,15 +37,17 @@
       {{ formatDate(booking.start) }} ― {{ formatDate(booking.end )}}
       <br><br>
       <div v-if="!isReviewed()">
-        <textarea rows="8" cols="35" name="comment" placeholder="Add review"/>
-        <br>
-        <input type="text" name="rating" placeholder="Rating (1-5)" size="5" maxlength="1"/>
-        <br><br>
-        <button type="button">Add Review</button>
+        <form @submit.prevent="review">
+          <textarea rows="8" v-model="review.comment" cols="35" name="comment" placeholder="Add review"/>
+          <br>
+          <input type="text" v-model="review.rating" name="rating" placeholder="Rating (1-5)" size="5" maxlength="1"/>
+          <br><br>
+          <button type="submit">Add Review</button>
+        </form>
         <br><br>
       </div>
-      <div v-if="isReviewed()">
-        <ReviewItem :comment="comment" :rating="rating" />
+      <div v-if="isReviewed(booking.booking_id)">
+        <ReviewItem :comment="review.comment" :rating="review.rating" />
       </div>
     </li>
   </ol>
@@ -66,9 +68,15 @@ export default {
       listings: [],
       bookings: [],
       bookedListings: [],
-      comment: "test comment parent",
-      rating: [1,1,1,1,1],
-      }
+      review: {
+        comment: "",
+        rating: "",
+        timestamp: "",
+        author_id: -1,
+        target_id: -1,
+        version: 1,
+      },
+    }
   },
   async created() {
     
@@ -92,7 +100,34 @@ export default {
   },
   methods: {
     isReviewed() {
-      return true;
+      return false;
+    },
+    async review() {
+
+      console.log('Review');
+      review.target_id = booking_id;
+
+      await fetch("http://localhost:4000/api/userid", {
+        method: "GET",
+        credentials: "include",
+      }).then(function (response) {
+      if (response.ok) {
+        console.log("FETCH COMPLETE userid ");
+        return response.json();
+      } else {
+        console.log("FETCH FAILED userId");
+        return Promise.reject(response);
+      }}).then( function (data) {
+        review.author_id = data;
+      });
+
+      await fetch("http://localhost:4000/api/create-review", {
+        method: "POST",
+        body: JSON.stringify(review),
+      })
+        .then(function (response) {
+          return response.json();
+        });
     },
     formatDate(date) {
       date = new Date(date);

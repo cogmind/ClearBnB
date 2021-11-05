@@ -19,6 +19,7 @@ public class Booking {
     Date end;
     int guests;
     boolean cancelled;
+    double available_funds;
 
     public long getBooking_id() {
         return booking_id;
@@ -83,4 +84,8 @@ public class Booking {
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+
+    public double getAvailable_funds() { return available_funds; }
+
+    public void setAvailable_funds(double available_funds) { this.available_funds = available_funds; }
 }

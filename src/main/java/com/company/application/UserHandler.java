@@ -24,9 +24,23 @@ public class UserHandler {
         this.whoami();
         this.getId();
         this.getAnyId();
+        this.getUserBalance();
         this.remove();
         this.getAllUsers();
         this.getAnyUsername();
+    }
+
+    private void getUserBalance() {
+        app.get("/api/user-balance/:id", (req, res) -> {
+            System.out.println("GETTTING USER BALANCE");
+            res.append("Access-Control-Allow-Origin", "http://localhost:3000");
+            res.append("Access-Control-Allow-Credentials", "true");
+
+            Long id = Long.parseLong(req.params("id"));
+            User user = userRepository.getById(id);
+            System.out.println(user.getBalance());
+            res.send(user.getBalance());
+        });
     }
 
     private void getAnyId() {

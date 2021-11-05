@@ -2,8 +2,10 @@ package com.company.application;
 
 import com.company.domain.Booking;
 import com.company.domain.Listing;
+import com.company.domain.User;
 import com.company.infrastructure.BookingRepositoryImpl;
 import com.company.infrastructure.ListingRepositoryImpl;
+import com.company.infrastructure.UserRepositoryImpl;
 import express.Express;
 import jakarta.persistence.EntityManager;
 
@@ -61,47 +63,62 @@ public class BookingHandler {
                 fee = fee * (1.0 + PROFIT_MARGIN);
                 booking.setFee(fee);
 
-                // Retrieve listing from DB
-                ListingRepositoryImpl listingRepository = new ListingRepositoryImpl(this.entityManager);
-                Listing current_listing = listingRepository.getListingById(booking.getListing_id());
-                Date available_start = current_listing.getStart();
-                Date available_end = current_listing.getEnd();
+                // Check if funds are available
+                if (fee > booking.getAvailable_funds()) {
+                    System.out.println("NOT ENOUGH MONEY IN ACCOUNT");
+                    res.json("Not enough money in account.");
+                } else { // Funds are available
 
-                // Check if dates are valid for a specific listing
-                System.out.println("----------------------------");
-                System.out.println("available_start: " + available_start);
-                System.out.println("booking_start: " + booking_start);
-                System.out.println("----------------------------");
-                System.out.println("available_end: " + available_end);
-                System.out.println("booking_end: " + booking_end);
-                System.out.println("----------------------------");
-                System.out.println("booking_start.compareTo(available_start): " + booking_start.compareTo(available_start));
-                System.out.println("booking_end.compareTo(available_end) <= 0: " + booking_end.compareTo(available_end));
-                if ((booking_start.compareTo(available_start) >= 0) && (booking_end.compareTo(available_end) <= 0)) {
-                    System.out.println("Valid booking (1). Valid dates when booking...");
+                    // Retrieve listing from DB
+                    ListingRepositoryImpl listingRepository = new ListingRepositoryImpl(this.entityManager);
+                    Listing current_listing = listingRepository.getListingById(booking.getListing_id());
+                    Date available_start = current_listing.getStart();
+                    Date available_end = current_listing.getEnd();
 
-                    // Check if dates have already been taken, for all bookings of a listing
-                    BookingRepositoryImpl bookings = new BookingRepositoryImpl(entityManager);
-                    List<Booking> bookingsForCurrentListing = bookings.getBookingsByListingId(current_listing.getListing_id());
+                    // Check if dates are valid for a specific listing
+                    System.out.println("----------------------------");
+                    System.out.println("available_start: " + available_start);
+                    System.out.println("booking_start: " + booking_start);
+                    System.out.println("----------------------------");
+                    System.out.println("available_end: " + available_end);
+                    System.out.println("booking_end: " + booking_end);
+                    System.out.println("----------------------------");
+                    System.out.println("booking_start.compareTo(available_start): " + booking_start.compareTo(available_start));
+                    System.out.println("booking_end.compareTo(available_end) <= 0: " + booking_end.compareTo(available_end));
+                    if ((booking_start.compareTo(available_start) >= 0) && (booking_end.compareTo(available_end) <= 0)) {
+                        System.out.println("Valid booking (1). Valid dates when booking...");
 
-                    Date next_start;
-                    Date next_end;
-                    for (Booking next_booking: bookingsForCurrentListing) {
-                        next_start = next_booking.getStart();
-                        next_end = next_booking.getEnd();
-                        if (!(booking_start.compareTo(next_end) >= 0 || booking_end.compareTo(next_start) <= 0)) {
-                            res.json("ERROR: Booking overlaps with an existing booking.");
-                            return;
+                        // Check if dates have already been taken, for all bookings of a listing
+                        BookingRepositoryImpl bookings = new BookingRepositoryImpl(entityManager);
+                        List<Booking> bookingsForCurrentListing = bookings.getBookingsByListingId(current_listing.getListing_id());
+
+                        Date next_start;
+                        Date next_end;
+                        for (Booking next_booking : bookingsForCurrentListing) {
+                            next_start = next_booking.getStart();
+                            next_end = next_booking.getEnd();
+                            if (!(booking_start.compareTo(next_end) >= 0 || booking_end.compareTo(next_start) <= 0)) {
+                                res.json("ERROR: Booking overlaps with an existing booking.");
+                                return;
+                            }
                         }
-                    }
-                    bookingRepository.save(booking);
-                    res.json("Valid booking. No overlap with current bookings");
-                    System.out.println("Valid booking. No overlap with current bookings");
-                } else {
-                    System.out.println("Invalid dates when booking. Dates not available (1)");
-                    res.json("ERROR: Invalid dates");
-                }
 
+                        // Save booking
+                        bookingRepository.save(booking);
+
+                        // Update balance of account
+                        UserRepositoryImpl userRepository = new UserRepositoryImpl(this.entityManager);
+                        User current_user = userRepository.getById(booking.getUser());
+                        current_user.setBalance(booking.getAvailable_funds() - fee);
+                        userRepository.save(current_user);
+
+                        res.json("Valid booking. No overlap with current bookings");
+                        System.out.println("Valid booking. No overlap with current bookings");
+                    } else {
+                        System.out.println("Invalid dates when booking. Dates not available (1)");
+                        res.json("ERROR: Invalid dates");
+                    }
+                }
             }
             catch(Exception e) {
                 e.printStackTrace();

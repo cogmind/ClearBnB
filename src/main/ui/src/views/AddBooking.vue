@@ -40,6 +40,10 @@ export default {
   },
   methods: { 
     async book() {
+
+      // Check available funds
+      let funds = await (await fetch("http://localhost:4000/api/user-balance/" + this.$store.getters.getUserId)).json();
+
       // Format date
       if (this.start.indexOf('-') < 0) {
       this.start =
@@ -65,14 +69,19 @@ export default {
         guests: this.guests,
         start: this.toDate(this.start),
         end: this.toDate(this.end),
+        available_funds: funds,
       }
       console.log(booking);
+
       let response = await(await fetch('http://localhost:4000/api/createbooking', {
-        method: 'Post',
+        method: 'POST',
         body: JSON.stringify(booking),
         credentials: 'include',
       })).json();
-      console.log(response);
+      console.log('JSON: ', response);
+      if (response === "Not enough money in account.") {
+          alert('Not enough money in account.');
+      }
     },
     toDate(isoString) {
       let year = isoString.substring(0, 4);
